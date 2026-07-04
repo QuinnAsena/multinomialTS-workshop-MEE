@@ -3,7 +3,7 @@ title: "State-Space Methods for Community and Paleoecological Time Series"
 subtitle: "multinomialTS"
 author: "Quinn Asena • Jack Williams • and Tony Ives"
 date: today
-# bibliography: ../refs.bib
+bibliography: ../refs.bib
 from: markdown+emoji
 format:
   revealjs:

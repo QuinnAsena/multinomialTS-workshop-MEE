@@ -9,7 +9,7 @@
 <meta name="author" content="Quinn Asena, Jack Williams, and Tony Ives">
 <meta name="dcterms.date" content="2026-07-04">
 
-<title>Workshop template</title>
+<title>multinomialTS — coding demo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2485,29 +2485,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#the-data" id="toc-the-data" class="nav-link" data-scroll-target="#the-data">The data</a></li>
+  <li><a href="#state-variables-y-and-the-driver" id="toc-state-variables-y-and-the-driver" class="nav-link" data-scroll-target="#state-variables-y-and-the-driver">State variables <span class="math inline">\(Y\)</span> and the driver</a>
   <ul class="collapse">
-  <li><a href="#this-template" id="toc-this-template" class="nav-link" data-scroll-target="#this-template">This template</a>
-  <ul class="collapse">
-  <li><a href="#sequence-for-today" id="toc-sequence-for-today" class="nav-link" data-scroll-target="#sequence-for-today">Sequence for today</a></li>
+  <li><a href="#joining-and-binning" id="toc-joining-and-binning" class="nav-link" data-scroll-target="#joining-and-binning">Joining and binning</a></li>
+  <li><a href="#plotting-the-aggregated-taxa-and-the-driver" id="toc-plotting-the-aggregated-taxa-and-the-driver" class="nav-link" data-scroll-target="#plotting-the-aggregated-taxa-and-the-driver">Plotting the aggregated taxa and the driver</a></li>
+  <li><a href="#building-the-model-matrices" id="toc-building-the-model-matrices" class="nav-link" data-scroll-target="#building-the-model-matrices">Building the model matrices</a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#fitting-mnts" id="toc-fitting-mnts" class="nav-link" data-scroll-target="#fitting-mnts">Fitting <code>mnTS()</code></a>
-  <ul class="collapse">
-  <li><a href="#state-variables-y" id="toc-state-variables-y" class="nav-link" data-scroll-target="#state-variables-y">State variables <span class="math inline">\(Y\)</span></a></li>
-  <li><a href="#handling-the-covariates-x" id="toc-handling-the-covariates-x" class="nav-link" data-scroll-target="#handling-the-covariates-x">Handling the covariates <span class="math inline">\(X\)</span></a></li>
   <li><a href="#fitting-multinomialts" id="toc-fitting-multinomialts" class="nav-link" data-scroll-target="#fitting-multinomialts">Fitting <code>multinomialTS</code></a>
   <ul class="collapse">
-  <li><a href="#finding-initial-conditions-using-mnglmm" id="toc-finding-initial-conditions-using-mnglmm" class="nav-link" data-scroll-target="#finding-initial-conditions-using-mnglmm">Finding initial conditions using <code>mnGLMM()</code></a></li>
-  <li><a href="#interpreting-outputs" id="toc-interpreting-outputs" class="nav-link" data-scroll-target="#interpreting-outputs">Interpreting outputs</a></li>
+  <li><a href="#finding-initial-conditions-with-mnglmm" id="toc-finding-initial-conditions-with-mnglmm" class="nav-link" data-scroll-target="#finding-initial-conditions-with-mnglmm">Finding initial conditions with <code>mnGLMM()</code></a></li>
+  <li><a href="#setting-up-parameters-for-mnts" id="toc-setting-up-parameters-for-mnts" class="nav-link" data-scroll-target="#setting-up-parameters-for-mnts">Setting up parameters for <code>mnTS()</code></a></li>
+  <li><a href="#fitting-mnts" id="toc-fitting-mnts" class="nav-link" data-scroll-target="#fitting-mnts">Fitting <code>mnTS()</code></a></li>
   </ul></li>
-  </ul></li>
-  <li><a href="#your-turn" id="toc-your-turn" class="nav-link" data-scroll-target="#your-turn">Your turn!</a>
+  <li><a href="#interpreting-the-output" id="toc-interpreting-the-output" class="nav-link" data-scroll-target="#interpreting-the-output">Interpreting the output</a>
   <ul class="collapse">
-  <li><a href="#question-1" id="toc-question-1" class="nav-link" data-scroll-target="#question-1">Question 1</a></li>
-  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2">Question 2</a></li>
-  <li><a href="#question-3-1" id="toc-question-3-1" class="nav-link" data-scroll-target="#question-3-1">Question 3</a></li>
-  <li><a href="#question-4-if-time-permits" id="toc-question-4-if-time-permits" class="nav-link" data-scroll-target="#question-4-if-time-permits">Question 4 (if time permits!)</a></li>
+  <li><a href="#comparing-models" id="toc-comparing-models" class="nav-link" data-scroll-target="#comparing-models">Comparing models</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -2517,7 +2511,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Workshop template</h1>
+<h1 class="title">multinomialTS — coding demo</h1>
 </div>
 
 
@@ -2554,33 +2548,28 @@ window.Quarto = {
 </section>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
-<p>One of the primary goals of this model is to be able to test multiple hypotheses about the data and lend statistical support to the different hypotheses. For example which environmental drivers are having the strongest effects on which taxa? Or, are interactions among taxa or abiotic variables driving change in the system? This state-space approach allows us to estimate coefficients for taxa interactions and driver-taxa relationships, that we don’t get from methods such as ordination or cluster analysis. We recommend this method as complimentary to other methods, as both have their advantages.</p>
-<section id="this-template" class="level2">
-<h2 class="anchored" data-anchor-id="this-template">This template</h2>
-<p>This document is the template we will work through today for learning how to parameterize and fit <code>multinomialTS</code>. A more detailed walkthrough is also in this repository under the file ‘state-space-walkthrough.qmd’</p>
-<section id="sequence-for-today" class="level3">
-<h3 class="anchored" data-anchor-id="sequence-for-today">Sequence for today</h3>
-<p>This document will take us through:</p>
+<p><code>multinomialTS</code> fits a state-space model to multinomially distributed ecological time series (e.g., pollen counts). One of the primary goals is to test multiple hypotheses about the data: which environmental drivers have the strongest effects on which taxa, and are interactions among taxa or abiotic variables driving change in the system? The approach estimates coefficients for taxa interactions and driver–taxa relationships that we don’t get from methods such as ordination or cluster analysis, and we recommend it as complementary to those methods.</p>
+<p>This is a short coding demo. A more detailed walkthrough is in <code>state-space-walkthrough.qmd</code>, and further resources are in the <a href="https://github.com/QuinnAsena/multinomialTS-workshop">main workshop repository</a>.</p>
+<p><strong>In this demo we will:</strong></p>
 <ul>
-<li>Choosing a resolution for <code>mnTS()</code></li>
-<li>Finding initial conditions with <code>mnGLMM()</code></li>
-<li>Fitting <code>mnTS()</code> with and without species interactions</li>
-<li>assess the resulting models</li>
+<li>Read in the pre-wrangled data (taxa already aggregated into focal taxa and groups)</li>
+<li>Plot the state variables and the environmental driver</li>
+<li>Choose a temporal resolution and bin the data</li>
+<li>Find initial conditions with <code>mnGLMM()</code></li>
+<li>Fit <code>mnTS()</code> with and without species interactions</li>
+<li>Compare the models</li>
 </ul>
 </section>
-</section>
-</section>
-<section id="fitting-mnts" class="level1">
-<h1>Fitting <code>mnTS()</code></h1>
-<p>For today, we will be working with the data that have focal taxa and groups already wrangled. This part is covered in the slides and the code is all in the extended walkthrough.</p>
+<section id="the-data" class="level1">
+<h1>The data</h1>
+<p>We work with the built-in <code>story</code> data (Story Lake). The taxa have already been wrangled into focal taxa (<em>Ulmus</em>, <em>Fagus grandifolia</em>, <em>Quercus</em>) plus a <code>hardwood</code> group and an <code>other</code> reference group. Full details of that wrangling step are in the extended walkthrough.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read-in the wrangled data</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in our X variables</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(story_char_wide, <span class="at">package =</span> <span class="st">&quot;multinomialTS&quot;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the long data for plotting</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(story_pollen_wide, <span class="at">package =</span> <span class="st">&quot;multinomialTS&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># State variables (Y): pollen counts, wide format</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(story_pollen_wide, <span class="at">package =</span> <span class="st">&quot;multinomialTS&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Covariate (X): charcoal accumulation</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(story_char_wide, <span class="at">package =</span> <span class="st">&quot;multinomialTS&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Here is what the state variable (<span class="math inline">\(Y\)</span>) data look like:</p>
+<p>The state variables (<span class="math inline">\(Y\)</span>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_pollen_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2596,7 +2585,7 @@ window.Quarto = {
 6 203.   132.     88       52                  34      91    19</code></pre>
 </div>
 </div>
-<p>And our covariate (<span class="math inline">\(X\)</span>):</p>
+<p>And the covariate (<span class="math inline">\(X\)</span>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_char_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2611,171 +2600,116 @@ window.Quarto = {
 6 -57.2   5.5     29.8</code></pre>
 </div>
 </div>
-<p>For the moment, we are keeping the age and depth columns in both tibbles. These columns are so that we have a common variable to match the two tibbles, and will be removed a little later.</p>
-<section id="state-variables-y" class="level2">
-<h2 class="anchored" data-anchor-id="state-variables-y">State variables <span class="math inline">\(Y\)</span></h2>
-<p>We will start off by choosing a resolution for the model predictions (<em>e.g.,</em> predicting ecological process at 50 or 100 year intervals).</p>
+<p>The <code>age</code> and <code>depth</code> columns are kept for now as common variables to match the two tibbles; they are removed before fitting.</p>
+</section>
+<section id="state-variables-y-and-the-driver" class="level1">
+<h1>State variables <span class="math inline">\(Y\)</span> and the driver</h1>
+<p>We start by choosing a resolution for the model predictions (e.g., predicting ecological process at 50- or 100-year intervals).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-span of the data divided by the number of observations</span></span>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Time-span divided by number of observations</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(story_pollen_wide<span class="sc">$</span>age) <span class="sc">/</span> <span class="fu">nrow</span>(story_pollen_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 83.48578</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Age differences between successive observations</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(story_pollen_wide<span class="sc">$</span>age)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1]  69.017  42.946  48.331  96.968  11.459  14.340  54.308  55.284 138.681
-[10]  66.118  48.695 143.230 103.015 186.753  58.537  54.550  52.888  50.954
-[19] 104.623 100.248 100.144  51.406  53.372  52.350  53.950  51.957  53.782
-[28]  59.512  72.266 168.719 111.125  47.302  47.531  47.949  55.391  90.190
-[37]  66.359  68.199  97.921  60.144  54.207 109.400 165.792 141.147  93.284
-[46]  90.969  85.959  87.634  86.346  79.080  85.733  84.658  85.647  85.731
-[55]  86.000  88.257  84.158  86.849  90.252 144.587  79.708  89.321  43.635
-[64]  43.511  42.991  42.250  44.523  47.083  54.088 115.201  99.857  73.484
-[73] 128.326 116.359 119.324 123.707 132.304 219.725 184.122  71.101  68.843
-[82]  66.205  65.555  71.999  71.922  86.020 153.328 103.854  76.139  71.061
-[91]  71.132 129.632 127.729 137.070</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The range of the age differences</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(<span class="fu">diff</span>(story_pollen_wide<span class="sc">$</span>age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The range and average of the age differences between successive observations</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(<span class="fu">diff</span>(story_pollen_wide<span class="sc">$</span>age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  11.459 219.725</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the average of the age differences</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">diff</span>(story_pollen_wide<span class="sc">$</span>age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">diff</span>(story_pollen_wide<span class="sc">$</span>age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 85.0778</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the standard deviation of the age differences</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(<span class="fu">diff</span>(story_pollen_wide<span class="sc">$</span>age))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 38.36777</code></pre>
 </div>
-</div>
-<p>This all looks great! If we bin the data at around 50-75 years, we will still have most of our data in independent bins.</p>
-<p>Now that we know roughly what bin-width to use to maximise the number of observations in the state variables, we will apply the same bin-width to both the state variables and the covariate data.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Ask me questions!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>What questions do you have so far?</p>
-</div>
-</div>
-</section>
-<section id="handling-the-covariates-x" class="level2">
-<h2 class="anchored" data-anchor-id="handling-the-covariates-x">Handling the covariates <span class="math inline">\(X\)</span></h2>
-<p>Covariates need to be handled according to decisions that were made around the state variables, that is, if the state variables were binned at a century-level resolution then the covariates must match that resolution. We <em>can</em> have a finer temporal resolution of the covariates than we do of the state variables. In this dataset, our state variables have 95 observations, and our covariate has 646 observations over the same time-span. Having more observations of environmental covariates is common in palaeo-data and works well with fitting the model.</p>
-<p>Since we need to apply the same binning procedure to both the state variables and the covariate, I like to join both datasets. Charcoal was sampled to a greater depth than the pollen data, so we are going to clip the covariate to the extent of the state variables and join the two datasets by their common variable, age.</p>
+<p>Binning at around 50–75 years keeps most of our data in independent bins. We apply the same bin-width to both the state variables and the covariate.</p>
+<section id="joining-and-binning" class="level2">
+<h2 class="anchored" data-anchor-id="joining-and-binning">Joining and binning</h2>
+<p>Charcoal was sampled to a greater depth than the pollen, so we clip the covariate to the extent of the state variables and join by the common <code>age</code> variable.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Clip covariate data to the extent of the state variables</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Join the two by age so that we get a square matrix</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>story_join <span class="ot">&lt;-</span> story_char_wide <span class="sc">|&gt;</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">&lt;=</span> <span class="fu">max</span>(story_pollen_wide<span class="sc">$</span>age)) <span class="sc">|&gt;</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(story_pollen_wide)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Always double check dimensions before/after joining!</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(story_join)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>story_join <span class="ot">&lt;-</span> story_char_wide <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">&lt;=</span> <span class="fu">max</span>(story_pollen_wide<span class="sc">$</span>age)) <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(story_pollen_wide)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Always double-check dimensions before/after joining!</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(story_join)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 646   8</code></pre>
 </div>
 </div>
-<p>Now we have all our data joined. Note that the covariate <span class="math inline">\(X\)</span> (<code>char_acc</code>) has observations every cm, whereas pollen was sampled at less frequent intervals (this is OK! <span class="emoji" data-emoji="smiley">😃</span>). It is always worth doing quick checks like <code>head()</code>, <code>tail()</code>, and <code>dim()</code> to catch any coding mistakes:</p>
+<p>Now we bin. For covariates we take the <em>average</em> value per bin; for pollen counts we take the <em>sum</em> (required by the underlying multinomial distribution).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_join, <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 8
-     age depth char_acc other hardwood `Fagus grandifolia` Quercus Ulmus
-   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;int&gt;               &lt;int&gt;   &lt;int&gt; &lt;int&gt;
- 1 -66.2   0.5     0      106       60                   8      96     9
- 2 -63.4   1.5    15.8     NA       NA                  NA      NA    NA
- 3 -61.4   2.5    40.3     NA       NA                  NA      NA    NA
- 4 -59.8   3.5    21.8     NA       NA                  NA      NA    NA
- 5 -58.5   4.5    37.3     NA       NA                  NA      NA    NA
- 6 -57.2   5.5    29.8     NA       NA                  NA      NA    NA
- 7 -56.0   6.5    34.4     NA       NA                  NA      NA    NA
- 8 -54.8   7.5    21.2     NA       NA                  NA      NA    NA
- 9 -53.7   8.5    20.5     NA       NA                  NA      NA    NA
-10 -52.6   9.5     8.26    NA       NA                  NA      NA    NA</code></pre>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>bin_width <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">&lt;-</span> <span class="fu">cut</span>(story_join<span class="sc">$</span>age,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(story_join<span class="sc">$</span>age),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">to =</span> <span class="fu">max</span>(story_join<span class="sc">$</span>age <span class="sc">+</span> bin_width),</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">by =</span> bin_width), <span class="at">include.lowest =</span> <span class="cn">TRUE</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>story_binned <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(<span class="at">bins =</span> bins, story_join) <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bins) <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),        <span class="co"># centre of the bin</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">char_acc =</span> <span class="fu">mean</span>(char_acc, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># mean charcoal accumulation per bin</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">other =</span> <span class="fu">sum</span>(other, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),     <span class="co"># counts are summed</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">hardwood =</span> <span class="fu">sum</span>(hardwood, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ulmus =</span> <span class="fu">sum</span>(Ulmus, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quercus =</span> <span class="fu">sum</span>(Quercus, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(age))</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: gaps in the pollen data are now filled with 0&#39;s, not NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(story_join, <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 8
-     age depth char_acc other hardwood `Fagus grandifolia` Quercus Ulmus
-   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;int&gt;               &lt;int&gt;   &lt;int&gt; &lt;int&gt;
- 1 7777.  648.     2.50    NA       NA                  NA      NA    NA
- 2 7794.  648.     8.19    19       49                   2     142    45
- 3 7812.  650.    19.1     NA       NA                  NA      NA    NA
- 4 7829.  650.     6.19    NA       NA                  NA      NA    NA
- 5 7845.  652.     2.78    NA       NA                  NA      NA    NA
- 6 7863.  652.     4.20    NA       NA                  NA      NA    NA
- 7 7880.  654.     5.02    NA       NA                  NA      NA    NA
- 8 7898.  654.     3.17    NA       NA                  NA      NA    NA
- 9 7914.  656.     4.51    NA       NA                  NA      NA    NA
-10 7931.  656.     2.60    43       39                   3     172    37</code></pre>
-</div>
-</div>
-<p>This all looks good, and we can now bin the data to an appropriate temporal resolution for fitting the model. Choosing a bin-width may take some trial and error, I’m going with a bin-width of 50 years.</p>
+</section>
+<section id="plotting-the-aggregated-taxa-and-the-driver" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-the-aggregated-taxa-and-the-driver">Plotting the aggregated taxa and the driver</h2>
+<p>Here are the aggregated state variables (<code>other</code>, <code>hardwood</code>, and the three focal taxa) alongside the environmental driver (<code>char_acc</code>), at the 50-year resolution that goes into the model. Note the different scale for charcoal accumulation versus pollen counts.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code chunks the data into bins and gives us a grouping variable &quot;bins&quot;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>bin_width <span class="ot">&lt;-</span> <span class="dv">50</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>bins <span class="ot">&lt;-</span> <span class="fu">cut</span>(story_join<span class="sc">$</span>age,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(story_join<span class="sc">$</span>age),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">to =</span> <span class="fu">max</span>(story_join<span class="sc">$</span>age <span class="sc">+</span> bin_width),</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> bin_width), <span class="at">include.lowest =</span> <span class="cn">TRUE</span>, <span class="at">labels =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>demo_long <span class="ot">&lt;-</span> story_binned <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(age, char_acc, other, hardwood, Ulmus, <span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span>, Quercus) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>age, <span class="at">names_to =</span> <span class="st">&quot;variablename&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;value&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">variablename =</span> <span class="fu">factor</span>(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    variablename,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;char_acc&quot;</span>, <span class="st">&quot;other&quot;</span>, <span class="st">&quot;hardwood&quot;</span>, <span class="st">&quot;Ulmus&quot;</span>, <span class="st">&quot;Fagus grandifolia&quot;</span>, <span class="st">&quot;Quercus&quot;</span>),</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Charcoal acc.&quot;</span>, <span class="st">&quot;other&quot;</span>, <span class="st">&quot;hardwood&quot;</span>, <span class="st">&quot;Ulmus&quot;</span>, <span class="st">&quot;Fagus&quot;</span>, <span class="st">&quot;Quercus&quot;</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(demo_long, <span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> value)) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">colour =</span> <span class="st">&quot;grey90&quot;</span>) <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">xend =</span> age, <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> value),</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">colour =</span> <span class="st">&quot;grey30&quot;</span>, <span class="at">linewidth =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reverse</span>(<span class="at">breaks =</span> scales<span class="sc">::</span><span class="fu">breaks_pretty</span>(<span class="at">n =</span> <span class="dv">6</span>)) <span class="sc">+</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">&quot;Pollen counts / charcoal accumulation&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Time (ybp)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>variablename, <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">scales =</span> <span class="st">&quot;free_x&quot;</span>) <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-taxa-driver" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-taxa-driver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img role="img" src="data:image/png;base64,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" class="img-fluid figure-img" width="864">
 </div>
-<p>We now apply the bins to our data. For most types of covariates we want the <em>average</em> value of the covariate in each bin. But for the pollen count data, we want the <em>sum</em>. This is because of the underlying multinomial distribution in the model.</p>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-taxa-driver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure 1: Binned state variables (pollen counts of the focal taxa and the ‘hardwood’ and ‘other’ groups) and the environmental driver (charcoal accumulation), at 50-year resolution.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="building-the-model-matrices" class="level2">
+<h2 class="anchored" data-anchor-id="building-the-model-matrices">Building the model matrices</h2>
+<p><code>multinomialTS</code> requires two matrices: a site-by-species matrix <span class="math inline">\(Y\)</span>, and a covariate matrix <span class="math inline">\(X\)</span>. <span class="math inline">\(X\)</span> variables may be of different types but should be scaled relative to each other.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pollen counts are summed per bin (required by the multinomial distribution); covariates are averaged</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>story_binned <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(<span class="at">bins =</span> bins, story_join) <span class="sc">|&gt;</span></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(bins) <span class="sc">|&gt;</span> <span class="co"># Group the data by the bins so that we calculate per time bin</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">age =</span> <span class="fu">mean</span>(age, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># the center of the bin</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">char_acc =</span> <span class="fu">mean</span>(char_acc, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># mean charcoal accumulation rate per bin</span></span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">other =</span> <span class="fu">sum</span>(other, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="co"># the sums of the count data</span></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">hardwood =</span> <span class="fu">sum</span>(hardwood, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">sum</span>(<span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">Ulmus =</span> <span class="fu">sum</span>(Ulmus, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">Quercus =</span> <span class="fu">sum</span>(Quercus, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(age))</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Be aware that the gaps in the pollen data are now filled with 0&#39;s not NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Let’s see what the data look like binned at a 50 year resolution:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_binned, <span class="at">n =</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 8
-    bins   age char_acc other hardwood `Fagus grandifolia` Ulmus Quercus
-   &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;    &lt;int&gt;               &lt;int&gt; &lt;int&gt;   &lt;int&gt;
- 1   160 7914.     3.43    43       39                   3    37     172
- 2   159 7863.     4.00     0        0                   0     0       0
- 3   158 7812.    11.1     19       49                   2    45     142
- 4   157 7761.     4.06     0        0                   0     0       0
- 5   156 7713.     5.29     0        0                   0     0       0
- 6   155 7666.     8.24    34       65                   1    68     129
- 7   154 7609.     8.50     0        0                   0     0       0
- 8   153 7553.     9.27    39       43                   2    60     145
- 9   152 7502.     5.05     0        0                   0     0       0
-10   151 7457.     5.46    30       69                   7    57     125</code></pre>
-</div>
-</div>
-<p>This is looking good, we have reduced the time-intervals over which to run the model. The data are now 160 rows with complete covariate data, containing 93 state variable observations. The original number of pollen observations was 95, so we have not summed many observations within the same bins.</p>
-<p><code>multinomialTS</code> requires two matrices, a site-by-species matrix <span class="math inline">\(Y\)</span>, and a covariate matrix <span class="math inline">\(X\)</span>, so we will leave <code>tibbles</code> behind and split the data. <span class="math inline">\(X\)</span> variables may be of different types (e.g., continuous, categorical…) but should be scaled relative to each other.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>story_pollen_matrix <span class="ot">&lt;-</span> story_binned <span class="sc">|&gt;</span>  <span class="co"># Select taxa</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(other, hardwood, Ulmus, <span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span>, Quercus) <span class="sc">|&gt;</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Fagus&quot;</span> <span class="ot">=</span> <span class="st">&quot;Fagus grandifolia&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Replacing 0 with NA is not strictly necessary for this workflow,</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># but guards against treating gap rows as zero-count observations</span></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>story_pollen_matrix[<span class="fu">which</span>(<span class="fu">rowSums</span>(story_pollen_matrix) <span class="sc">==</span> <span class="dv">0</span>), ] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_pollen_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>story_pollen_matrix <span class="ot">&lt;-</span> story_binned <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(other, hardwood, Ulmus, <span class="st">`</span><span class="at">Fagus grandifolia</span><span class="st">`</span>, Quercus) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="st">&quot;Fagus&quot;</span> <span class="ot">=</span> <span class="st">&quot;Fagus grandifolia&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Empty (gap) rows are set to NA so they are not treated as zero-count observations</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>story_pollen_matrix[<span class="fu">which</span>(<span class="fu">rowSums</span>(story_pollen_matrix) <span class="sc">==</span> <span class="dv">0</span>), ] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_pollen_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     other hardwood Ulmus Fagus Quercus
 [1,]    43       39    37     3     172
@@ -2785,11 +2719,11 @@ Ask me questions!
 [5,]    NA       NA    NA    NA      NA
 [6,]    34       65    68     1     129</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>story_char_matrix_scaled <span class="ot">&lt;-</span> story_binned <span class="sc">|&gt;</span> <span class="co"># select covariates</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(char_acc) <span class="sc">|&gt;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">|&gt;</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>() <span class="co"># Scale covariates</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_char_matrix_scaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>story_char_matrix_scaled <span class="ot">&lt;-</span> story_binned <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(char_acc) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>() <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale</span>()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_char_matrix_scaled)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       char_acc
 [1,] -0.9826414
@@ -2800,32 +2734,14 @@ Ask me questions!
 [6,] -0.2731469</code></pre>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Ask me questions!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>What questions do you have so far?</p>
-</div>
-</div>
 </section>
-<section id="fitting-multinomialts" class="level2">
-<h2 class="anchored" data-anchor-id="fitting-multinomialts">Fitting <code>multinomialTS</code></h2>
-<p>Ok, now we have:</p>
-<ul>
-<li>Chosen a temporal resolution for the model of 50 year bins</li>
-<li>Organised the data into a site-by-species matrix <span class="math inline">\(Y\)</span> at 50 year bins</li>
-<li>Binned and scaled covariate matrix <span class="math inline">\(X\)</span></li>
-</ul>
-<p>With that, we can fit the model.</p>
-<section id="finding-initial-conditions-using-mnglmm" class="level3">
-<h3 class="anchored" data-anchor-id="finding-initial-conditions-using-mnglmm">Finding initial conditions using <code>mnGLMM()</code></h3>
-<p>The <code>mnTS()</code> function will provide estimates for biotic interactions (<span class="math inline">\(C\)</span> matrix), taxa-driver relationships (<span class="math inline">\(B\)</span> matrix), and cross-correlated error (<span class="math inline">\(V\)</span> matrix). But the model needs initial starting values for these parameters to begin with. We get initial starting conditions from the data by running the <code>mnGLMM()</code> function. <code>mnGLMM()</code> returns estimates for the <span class="math inline">\(B\)</span> and <span class="math inline">\(V\)</span> matrices (not the <span class="math inline">\(C\)</span> matrix) and assumes that there are no time gaps in the data.</p>
+</section>
+<section id="fitting-multinomialts" class="level1">
+<h1>Fitting <code>multinomialTS</code></h1>
+<p>We now have a temporal resolution of 50-year bins, a site-by-species matrix <span class="math inline">\(Y\)</span>, and a binned and scaled covariate matrix <span class="math inline">\(X\)</span>.</p>
+<section id="finding-initial-conditions-with-mnglmm" class="level2">
+<h2 class="anchored" data-anchor-id="finding-initial-conditions-with-mnglmm">Finding initial conditions with <code>mnGLMM()</code></h2>
+<p><code>mnTS()</code> estimates biotic interactions (<span class="math inline">\(C\)</span> matrix), taxa-driver relationships (<span class="math inline">\(B\)</span> matrix), and cross-correlated error (<span class="math inline">\(V\)</span> matrix), but it needs starting values. We get those from <code>mnGLMM()</code>, which returns estimates for <span class="math inline">\(B\)</span> and <span class="math inline">\(V\)</span> (not <span class="math inline">\(C\)</span>) and assumes no time gaps in the data.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -2836,81 +2752,37 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The arguments of the <em>starting</em> values in both the <code>mnGLMM()</code> and <code>mnTS()</code> are all suffixed with <code>.start</code> (e.g., <code>B.start</code> will be the starting values for the <span class="math inline">\(B\)</span> matrix).</p>
-<p>The arguments of the parameters to be <em>estimated</em> are all suffixed with <code>.fixed</code> (e.g., <code>B.fixed</code> will be parameters that are estimated from <span class="math inline">\(B\)</span> matrix).</p>
+<p>Arguments for <em>starting</em> values are suffixed <code>.start</code>; arguments for the parameters to be <em>estimated</em> are suffixed <code>.fixed</code>.</p>
 </div>
 </div>
-<section id="setting-up-parameters-for-mnglmm" class="level4">
-<h4 class="anchored" data-anchor-id="setting-up-parameters-for-mnglmm">Setting-up parameters for <code>mnGLMM()</code></h4>
-<p>Now, let’s set up the parameters for <code>mnGLMM()</code>. We need:</p>
-<ul>
-<li>A vector that indicates the row indices where there are state variable observations: <code>sample_idx</code></li>
-<li>An integer number of covariates (+ 1 for <code>mnGLMM()</code>): <code>p</code></li>
-<li>An integer of the number of state variables: <code>n</code></li>
-<li>A matrix of starting values for <span class="math inline">\(B\)</span>: <code>B.start.glmm</code></li>
-<li>A matrix of <span class="math inline">\(B\)</span> parameters to estimate: <code>B.fixed.glmm</code></li>
-<li>A matrix of <span class="math inline">\(V\)</span> parameters to estimate: <code>V.fixed.glmm</code></li>
-</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row indices of bins that contain pollen observations (exclude empty/gap bins)</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>sample_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">rowSums</span>(story_pollen_matrix) <span class="sc">!=</span> <span class="dv">0</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="co"># make sure it works</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(story_pollen_matrix[sample_idx, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     other hardwood Ulmus Fagus Quercus
-[1,]    43       39    37     3     172
-[2,]    19       49    45     2     142
-[3,]    34       65    68     1     129
-[4,]    39       43    60     2     145
-[5,]    30       69    57     7     125
-[6,]    30       80    49    13     116</code></pre>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Row indices of bins that contain pollen observations (exclude empty/gap bins)</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>sample_idx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">rowSums</span>(story_pollen_matrix) <span class="sc">!=</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<p>Set-up the remaining parameters:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up parameters</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(story_char_matrix_scaled) <span class="sc">+</span> <span class="dv">1</span> <span class="co"># Number of independent variables plus intercept</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(story_pollen_matrix) <span class="co"># number of taxa</span></span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>V.fixed.glmm <span class="ot">&lt;-</span> <span class="fu">diag</span>(n)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(V.fixed.glmm) <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>V.fixed.glmm[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>B.fixed.glmm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,p),<span class="fu">rep</span>(<span class="cn">NA</span>, (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> p)), p, n) <span class="co"># reference taxa [,1] are set to 0</span></span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>B.start.glmm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,p),<span class="fu">rep</span>(.<span class="dv">01</span>, (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> p)), p, n) <span class="co"># reference taxa [,1] are set to 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(story_char_matrix_scaled) <span class="sc">+</span> <span class="dv">1</span> <span class="co"># number of covariates + intercept</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(story_pollen_matrix)          <span class="co"># number of taxa</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>V.fixed.glmm <span class="ot">&lt;-</span> <span class="fu">diag</span>(n)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(V.fixed.glmm) <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>V.fixed.glmm[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>B.fixed.glmm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, p), <span class="fu">rep</span>(<span class="cn">NA</span>, (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> p)), p, n) <span class="co"># reference taxa [,1] set to 0</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>B.start.glmm <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>, p), <span class="fu">rep</span>(.<span class="dv">01</span>, (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> p)), p, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These parameters are used as arguments to the <code>mnGLMM()</code> function. Check them out by printing them in your console. Each matrix needs to be the correct dimensions given the number of taxa and number of covariates. The position elements of each matrix reflect the species and/or the covariates, as we will see later in the output of the model.</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Ask me questions!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>What questions do you have so far?</p>
-</div>
-</div>
-</section>
-<section id="fitting-mnglmm" class="level4">
-<h4 class="anchored" data-anchor-id="fitting-mnglmm">Fitting <code>mnGLMM()</code></h4>
-<p>Remember that <code>mnGLMM()</code> does not handle gaps in the data and only fits complete <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> matrices. We have created a variable for our observation indices (<code>sample_idx</code>), so for <code>mnGLMM()</code> we will index the matrices by this variable: e.g., <code>story_pollen_matrix[sample_idx, ]</code>.</p>
+<p><code>mnGLMM()</code> does not handle gaps, so we index the matrices by <code>sample_idx</code>. The fit below is precomputed (loaded from <code>./outputs/</code>) so the document renders quickly; set <code>eval: true</code> to run it live.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit glmm</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>glmm_mod <span class="ot">&lt;-</span> <span class="fu">mnGLMM</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">X =</span> story_char_matrix_scaled[sample_idx, , <span class="at">drop =</span> <span class="cn">FALSE</span>],</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">B.start =</span> B.start.glmm,</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">B.fixed =</span> B.fixed.glmm,</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">V.fixed =</span> V.fixed.glmm)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(glmm_mod, <span class="st">&quot;./outputs/glmm_mod.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>glmm_mod <span class="ot">&lt;-</span> <span class="fu">mnGLMM</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">X =</span> story_char_matrix_scaled[sample_idx, , <span class="at">drop =</span> <span class="cn">FALSE</span>],</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">B.start =</span> B.start.glmm,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">B.fixed =</span> B.fixed.glmm,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">V.fixed =</span> V.fixed.glmm)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(glmm_mod, <span class="st">&quot;./outputs/glmm_mod.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The outputs of <code>mnGLMM()</code> can be examined with the <code>summary(glmm_mod)</code> and <code>coef(glmm_mod)</code> functions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>glmm_mod <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./outputs/glmm_mod.rds&quot;</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glmm_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>glmm_mod <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./outputs/glmm_mod.rds&quot;</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glmm_mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call: mnGLMM with Tmax =  93  n =  5 
@@ -2950,130 +2822,82 @@ V =
 </div>
 </div>
 </section>
-<section id="setting-up-parameters-for-mnts" class="level4">
-<h4 class="anchored" data-anchor-id="setting-up-parameters-for-mnts">Setting-up parameters for <code>mnTS()</code></h4>
-<p>Now, let’s set up the parameters for <code>mnTS()</code>. <code>mnTS()</code> needs:</p>
-<ul>
-<li>row indices as before: <code>sample_idx</code></li>
-<li>the number of covariates: <code>p</code></li>
-<li>the number of state variables: <code>n</code></li>
-<li>starting values for each matrix:
-<ul>
-<li><span class="math inline">\(BO\)</span>: <code>B0.start.mnTS</code> (intercept)</li>
-<li><span class="math inline">\(B\)</span>: <code>B.start.mnTS</code> (driver-taxa)</li>
-<li><span class="math inline">\(C\)</span>: <code>C.start.mnTS</code> (taxa interactions)</li>
-<li><span class="math inline">\(V\)</span>: <code>V.start.mnTS</code> (cross-correlated error)</li>
-</ul></li>
-<li>parameters to estimate for each matrix:
-<ul>
-<li><span class="math inline">\(BO\)</span>: <code>B0.fixed.mnTS</code></li>
-<li><span class="math inline">\(B\)</span>: <code>B.fixed.mnTS</code></li>
-<li><span class="math inline">\(C\)</span>: <code>C.fixed.mnTS</code></li>
-<li><span class="math inline">\(V\)</span>: <code>V.fixed.mnTS</code></li>
-</ul></li>
-</ul>
-<p>We are using the output from <code>mnGLMM()</code> as starting values for the matrices <span class="math inline">\(B0\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(V\)</span>. <code>mnGLMM()</code> does not provide estimates for <span class="math inline">\(C\)</span>, so we handle <span class="math inline">\(C\)</span> a little differently and we input values close to zero for each parameter estimated and let <code>mnTS()</code> do the rest.</p>
+<section id="setting-up-parameters-for-mnts" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-parameters-for-mnts">Setting up parameters for <code>mnTS()</code></h2>
+<p>We use the <code>mnGLMM()</code> output as starting values for <span class="math inline">\(B0\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(V\)</span>. <code>mnGLMM()</code> does not estimate <span class="math inline">\(C\)</span>, so we seed <span class="math inline">\(C\)</span> with values close to zero and let <code>mnTS()</code> do the rest.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># B.start</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>B0.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>B[<span class="dv">1</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># The first row is the intercept</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>B.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>B[<span class="dv">2</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># Row 2 is the covariate; add rows for more covariates</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>sigma.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>sigma</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>V.fixed.mnTS <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n) <span class="co"># Covariance matrix of environmental variation in process eq</span></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>V.fixed.mnTS[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>V.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>V</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>B.fixed.mnTS <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, p<span class="dv">-1</span>, n)</span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>B.fixed.mnTS[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>B0.fixed.mnTS <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">rep</span>(<span class="cn">NA</span>, n <span class="sc">-</span> <span class="dv">1</span>)), <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">ncol =</span> n)</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up C without interactions</span></span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagonal elements = intrinsic population dynamics (self-regulation), always estimated (NA)</span></span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Off-diagonal elements = species interactions; 0 = not estimated, NA = estimated</span></span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>C.start.mnTS <span class="ot">&lt;-</span> .<span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(n)</span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS <span class="ot">&lt;-</span> C.start.mnTS</span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS[C.fixed.mnTS <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up C with interactions between Fagus and Quercus</span></span>
-<span id="cb37-24"><a href="#cb37-24" aria-hidden="true" tabindex="-1"></a>C.start.int.mnTS <span class="ot">&lt;-</span> .<span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(n)</span>
-<span id="cb37-25"><a href="#cb37-25" aria-hidden="true" tabindex="-1"></a>C.start.int.mnTS[<span class="dv">5</span>, <span class="dv">4</span>] <span class="ot">&lt;-</span> .<span class="dv">001</span> <span class="co"># effect of Fagus (col 4) on Quercus (row 5)</span></span>
-<span id="cb37-26"><a href="#cb37-26" aria-hidden="true" tabindex="-1"></a>C.start.int.mnTS[<span class="dv">4</span>, <span class="dv">5</span>] <span class="ot">&lt;-</span> .<span class="dv">001</span> <span class="co"># effect of Quercus (col 5) on Fagus (row 4)</span></span>
-<span id="cb37-27"><a href="#cb37-27" aria-hidden="true" tabindex="-1"></a>C.fixed.int.mnTS <span class="ot">&lt;-</span> C.start.int.mnTS</span>
-<span id="cb37-28"><a href="#cb37-28" aria-hidden="true" tabindex="-1"></a>C.fixed.int.mnTS[C.fixed.int.mnTS <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>B0.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>B[<span class="dv">1</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># intercept</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>B.start.mnTS  <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>B[<span class="dv">2</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># covariate; add rows for more covariates</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>sigma.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>sigma</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>V.fixed.mnTS <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n)</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>V.fixed.mnTS[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>V.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>V</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>B.fixed.mnTS <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, p <span class="sc">-</span> <span class="dv">1</span>, n)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>B.fixed.mnTS[, <span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>B0.fixed.mnTS <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">rep</span>(<span class="cn">NA</span>, n <span class="sc">-</span> <span class="dv">1</span>)), <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">ncol =</span> n)</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="co"># C without interactions: diagonal = self-regulation (estimated); off-diagonal = 0 (not estimated)</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>C.start.mnTS <span class="ot">&lt;-</span> .<span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(n)</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS <span class="ot">&lt;-</span> C.start.mnTS</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS[C.fixed.mnTS <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="co"># C with an interaction between Fagus and Quercus</span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>C.start.int.mnTS <span class="ot">&lt;-</span> .<span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(n)</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>C.start.int.mnTS[<span class="dv">5</span>, <span class="dv">4</span>] <span class="ot">&lt;-</span> .<span class="dv">001</span> <span class="co"># effect of Fagus (col 4) on Quercus (row 5)</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>C.start.int.mnTS[<span class="dv">4</span>, <span class="dv">5</span>] <span class="ot">&lt;-</span> .<span class="dv">001</span> <span class="co"># effect of Quercus (col 5) on Fagus (row 4)</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>C.fixed.int.mnTS <span class="ot">&lt;-</span> C.start.int.mnTS</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>C.fixed.int.mnTS[C.fixed.int.mnTS <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="fitting-mnts-1" class="level4">
-<h4 class="anchored" data-anchor-id="fitting-mnts-1">Fitting <code>mnTS()</code></h4>
-<p>Remember, <code>mnTS()</code> <em>does</em> handle gaps in the state-variables where there are data in the covariate matrix. In the following code, we use the complete (no gaps) <span class="math inline">\(Y\)</span> matrix <code>story_pollen_matrix[sample_idx, ]</code> with dimensions: 93, 5. And the full <span class="math inline">\(X\)</span> matrix: <code>story_char_matrix_scaled</code> with dimensions: 160, 1 We will fit the model twice:</p>
-<ul>
-<li>without taxa interactions</li>
-<li>and with taxa interactions.</li>
-</ul>
+<section id="fitting-mnts" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-mnts">Fitting <code>mnTS()</code></h2>
+<p>Unlike <code>mnGLMM()</code>, <code>mnTS()</code> <em>does</em> handle gaps in the state variables where there are data in the covariate matrix. We fit the model twice: without and with taxa interactions. Both fits are precomputed; set <code>eval: true</code> to run them live.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href>Without interactions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href>With interactions</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>mnTS_mod <span class="ot">&lt;-</span> <span class="fu">mnTS</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">X =</span> story_char_matrix_scaled, <span class="at">Tsample =</span> sample_idx,</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">B0.start =</span> B0.start.mnTS, <span class="at">B0.fixed =</span> B0.fixed.mnTS,</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">B.start =</span> B.start.mnTS, <span class="at">B.fixed =</span> B.fixed.mnTS,</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">C.start =</span> C.start.mnTS, <span class="at">C.fixed =</span> C.fixed.mnTS,</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">V.start =</span> V.start.mnTS, <span class="at">V.fixed =</span> V.fixed.mnTS,</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dispersion.fixed =</span> <span class="dv">1</span>, <span class="at">maxit.optim =</span> <span class="fl">1e+6</span>)</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="co"># maxit.optim is the max number of iterations the optimiser will complete before stopping.</span></span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="co"># increase maxit.optim if the model needs a lot of time to fit.</span></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(mnTS_mod, <span class="st">&quot;./outputs/mnTS_mod.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>mnTS_mod <span class="ot">&lt;-</span> <span class="fu">mnTS</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">X =</span> story_char_matrix_scaled, <span class="at">Tsample =</span> sample_idx,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">B0.start =</span> B0.start.mnTS, <span class="at">B0.fixed =</span> B0.fixed.mnTS,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">B.start =</span> B.start.mnTS, <span class="at">B.fixed =</span> B.fixed.mnTS,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">C.start =</span> C.start.mnTS, <span class="at">C.fixed =</span> C.fixed.mnTS,</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">V.start =</span> V.start.mnTS, <span class="at">V.fixed =</span> V.fixed.mnTS,</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dispersion.fixed =</span> <span class="dv">1</span>, <span class="at">maxit.optim =</span> <span class="fl">1e+6</span>)</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># maxit.optim: max optimiser iterations before stopping; increase if the model needs more time</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(mnTS_mod, <span class="st">&quot;./outputs/mnTS_mod.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>mnTS_mod <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./outputs/mnTS_mod.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>mnTS_mod <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./outputs/mnTS_mod.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>mnTS_mod_int <span class="ot">&lt;-</span> <span class="fu">mnTS</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">X =</span> story_char_matrix_scaled, <span class="at">Tsample =</span> sample_idx,</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">B0.start =</span> mnTS_mod<span class="sc">$</span>B0, <span class="at">B0.fixed =</span> B0.fixed.mnTS,</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">B.start =</span> mnTS_mod<span class="sc">$</span>B, <span class="at">B.fixed =</span> B.fixed.mnTS,</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">C.start =</span> mnTS_mod<span class="sc">$</span>C, <span class="at">C.fixed =</span> C.fixed.int.mnTS,</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">V.start =</span> mnTS_mod<span class="sc">$</span>V, <span class="at">V.fixed =</span> V.fixed.mnTS,</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>                     <span class="at">dispersion.fixed =</span> <span class="dv">1</span>, <span class="at">maxit.optim =</span> <span class="fl">1e+6</span>)</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(mnTS_mod_int, <span class="st">&quot;./outputs/mnTS_mod_int.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mnTS_mod_int <span class="ot">&lt;-</span> <span class="fu">mnTS</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">X =</span> story_char_matrix_scaled, <span class="at">Tsample =</span> sample_idx,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">B0.start =</span> mnTS_mod<span class="sc">$</span>B0, <span class="at">B0.fixed =</span> B0.fixed.mnTS,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">B.start =</span> mnTS_mod<span class="sc">$</span>B, <span class="at">B.fixed =</span> B.fixed.mnTS,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">C.start =</span> mnTS_mod<span class="sc">$</span>C, <span class="at">C.fixed =</span> C.fixed.int.mnTS,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">V.start =</span> mnTS_mod<span class="sc">$</span>V, <span class="at">V.fixed =</span> V.fixed.mnTS,</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                     <span class="at">dispersion.fixed =</span> <span class="dv">1</span>, <span class="at">maxit.optim =</span> <span class="fl">1e+6</span>)</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(mnTS_mod_int, <span class="st">&quot;./outputs/mnTS_mod_int.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>mnTS_mod_int <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./outputs/mnTS_mod_int.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>mnTS_mod_int <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;./outputs/mnTS_mod_int.rds&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Ask me questions!
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>What questions do you have so far?</p>
 </div>
 </div>
 </section>
 </section>
-<section id="interpreting-outputs" class="level3">
-<h3 class="anchored" data-anchor-id="interpreting-outputs">Interpreting outputs</h3>
-<p>The <code>coef()</code> and <code>summary()</code> functions will show the model outputs. Let’s check out the coefficients of interaction model:</p>
+<section id="interpreting-the-output" class="level1">
+<h1>Interpreting the output</h1>
+<p><code>coef()</code> and <code>summary()</code> show the model output. Here are the coefficients of the interaction model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mnTS_mod_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(mnTS_mod_int)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                           Coef.         se         t            P
 hardwood              0.70701092 0.36912747  1.915357 5.544698e-02
@@ -3093,335 +2917,19 @@ char_acc.Fagus       -0.21981877 0.05499133 -3.997335 6.405959e-05
 char_acc.Quercus     -0.17458198 0.02669360 -6.540219 6.142871e-11</code></pre>
 </div>
 </div>
-<p>We have found that bootstrapping provides better estimates of standard errors (and subsequent P-values). The <code>boot()</code> function will bootstrap the model, but may take a very long time. We won’t do this today, but we strongly recommend bootstrapping your final models <a href="state-space-walkthrough.qmd">see the full walkthrough</a>.</p>
-<p>UPDATE SECTION WITH INTERPRETATION OF COEFFICIENTS</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Feedback
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Before the final section, <a href="https://forms.gle/e3RGnZQqJUYfjYWL6">please fill out a quick one up (positive comment) one down (something we can do better next time) feedback</a>. This helps us a lot (makes reporting and grant applications look good)! It will also help me refine future workshops.</p>
-</div>
-</div>
-</section>
-</section>
-</section>
-<section id="your-turn" class="level1">
-<h1>Your turn!</h1>
-<section id="question-1" class="level2">
-<h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
-<p>Ok, let’s try estimate a different interaction in the data. The answer is in the folded block. Give it a crack yourself before peeking at the answer!</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Create new input matrices for <code>C.start</code>, and <code>C.fixed</code> that estimates an interaction between only <em>Ulmus</em> and <em>Quercus</em>.</p>
-<p>Remember that filled elements of the <code>.start</code> matrix need to match the locations of estimated (<code>NA</code>) elements of the <code>.fixed</code> matrix.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
+<p>We have found that bootstrapping provides better estimates of standard errors (and P-values). The <code>boot()</code> function bootstraps the model but can take a long time; we don’t do it here, but we strongly recommend bootstrapping your final models — see the <a href="state-space-walkthrough.qmd">full walkthrough</a>.</p>
+<section id="comparing-models" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-models">Comparing models</h2>
+<p>A quick comparison of AIC between the model without and with interactions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>C.start.mnTS53 <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> <span class="fu">diag</span>(n) <span class="co"># creates an n x n matrix with diagonal elements</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>C.start.mnTS53[<span class="dv">5</span>, <span class="dv">3</span>] <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS53 <span class="ot">&lt;-</span> C.start.mnTS53</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS53[C.fixed.mnTS53 <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="question-2" class="level2">
-<h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
-<p>Ok, we have a new <code>C.fixed</code> argument. Let’s use it:</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Fit <code>mnTS()</code> using the new inputs to <code>C.start</code> and <code>C.fixed</code>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer, no peeking… <span class="emoji" data-emoji="grin">😁</span>
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-10" class="callout-10-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>mnTS_mod53 <span class="ot">&lt;-</span> <span class="fu">mnTS</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">X =</span> story_char_matrix_scaled, <span class="at">Tsample =</span> sample_idx,</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">B0.start =</span> B0.start.mnTS, <span class="at">B0.fixed =</span> B0.fixed.mnTS,</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">B.start =</span> B.start.mnTS, <span class="at">B.fixed =</span> B.fixed.mnTS,</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">C.start =</span> C.start.mnTS53, <span class="at">C.fixed =</span> C.fixed.mnTS53,</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">V.start =</span> V.start.mnTS, <span class="at">V.fixed =</span> V.fixed.mnTS,</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">dispersion.fixed =</span> <span class="dv">1</span>, <span class="at">maxit.optim =</span> <span class="fl">1e+6</span>)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="question-3-1" class="level2">
-<h2 class="anchored" data-anchor-id="question-3-1">Question 3</h2>
-<p>UPDATE THIS QUESTION</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>UPDATE</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-12" class="callout-12-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">without_interactions =</span> mnTS_mod<span class="sc">$</span>AIC,</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">with_interactions =</span> mnTS_mod_int<span class="sc">$</span>AIC,</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">with_interaction53 =</span> mnTS_mod53<span class="sc">$</span>AIC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<p>Which model is giving the lowest AIC? Does this agree with what you might expect from the data, and what hypothesis component are we testing?</p>
-</section>
-<section id="question-4-if-time-permits" class="level2">
-<h2 class="anchored" data-anchor-id="question-4-if-time-permits">Question 4 (if time permits!)</h2>
-<p>We can take a look at running the model with an additional covariate. For ease, I’m going to bind an increasing trend to the existing data.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run me!</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>new_X <span class="ot">&lt;-</span> <span class="fu">cbind</span>(story_char_matrix_scaled,</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">trend =</span> <span class="fu">as.vector</span>(<span class="fu">scale</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(story_char_matrix_scaled))))</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(new_X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">without_interactions =</span> mnTS_mod<span class="sc">$</span>AIC,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">with_interactions =</span> mnTS_mod_int<span class="sc">$</span>AIC)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       char_acc     trend
-[1,] -0.9826414 -1.715872
-[2,] -0.8978991 -1.694288
-[3,]  0.1548837 -1.672705
-[4,] -0.8894600 -1.651122
-[5,] -0.7078643 -1.629539
-[6,] -0.2731469 -1.607955</code></pre>
+<pre><code>  without_interactions with_interactions
+1            -1391.369         -1435.162</code></pre>
 </div>
 </div>
-<p>With another covariate, both the <code>mnGLMM()</code> and <code>mnTS()</code> need to be parameterised and run:</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question 4a
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Create new parameters for <code>mnGLMM()</code>. You can follow the code earlier in the template.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer 4a
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-14" class="callout-14-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(new_X) <span class="sc">+</span> <span class="dv">1</span> <span class="co"># Number of independent variables plus intercept</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(story_pollen_matrix) <span class="co"># number of taxa</span></span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>V.fixed.glmm.new_X <span class="ot">&lt;-</span> <span class="fu">diag</span>(n)</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(V.fixed.glmm.new_X) <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>V.fixed.glmm.new_X[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>B.fixed.glmm.new_X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,p),<span class="fu">rep</span>(<span class="cn">NA</span>, (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> p)), p, n) <span class="co"># reference taxa [,1] are set to 0</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>B.start.glmm.new_X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,p),<span class="fu">rep</span>(.<span class="dv">01</span>, (n <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> p)), p, n) <span class="co"># reference taxa [,1] are set to 0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question 4b
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>fit <code>mnGLMM()</code>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer 4b
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-16" class="callout-16-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit glmm</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>glmm_mod_new_X <span class="ot">&lt;-</span> <span class="fu">mnGLMM</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">X =</span> new_X[sample_idx, , <span class="at">drop =</span> <span class="cn">FALSE</span>],</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">B.start =</span> B.start.glmm.new_X,</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                         <span class="at">B.fixed =</span> B.fixed.glmm.new_X,</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>                         <span class="at">V.fixed =</span> V.fixed.glmm.new_X)</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question 4c
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Set up parameters for <code>mnTS()</code> we will not include interactions in this one.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-18-contents" aria-controls="callout-18" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer 4c
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-18" class="callout-18-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<p>Note the change in <code>glmm_mod_new_X$B[2:3, , drop = FALSE]</code>. With the additional X variable, the <span class="math inline">\(B\)</span> matrix now has two rows.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># B.start</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>B0.start.mnTS.new_X <span class="ot">&lt;-</span> glmm_mod_new_X<span class="sc">$</span>B[<span class="dv">1</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># The first row is the intercept</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>B.start.mnTS.new_X <span class="ot">&lt;-</span> glmm_mod_new_X<span class="sc">$</span>B[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># note the change in row indices here to 2:3</span></span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>sigma.start.mnTS.new_X <span class="ot">&lt;-</span> glmm_mod_new_X<span class="sc">$</span>sigma</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>V.fixed.mnTS.new_X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, n, n) <span class="co"># Covariance matrix of environmental variation in process eq</span></span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>V.fixed.mnTS.new_X[<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>V.start.mnTS.new_X <span class="ot">&lt;-</span> glmm_mod_new_X<span class="sc">$</span>V</span>
-<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>B.fixed.mnTS.new_X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="cn">NA</span>, p<span class="dv">-1</span>, n)</span>
-<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>B.fixed.mnTS.new_X[,<span class="dv">1</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>B0.fixed.mnTS.new_X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">rep</span>(<span class="cn">NA</span>, n <span class="sc">-</span> <span class="dv">1</span>)), <span class="at">nrow =</span> <span class="dv">1</span>, <span class="at">ncol =</span> n)</span>
-<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set-up C without interactions</span></span>
-<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>C.start.mnTS.new_X <span class="ot">&lt;-</span> .<span class="dv">5</span> <span class="sc">*</span> <span class="fu">diag</span>(n)</span>
-<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS.new_X <span class="ot">&lt;-</span> C.start.mnTS.new_X</span>
-<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>C.fixed.mnTS.new_X[C.fixed.mnTS.new_X <span class="sc">!=</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Question 4d
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Fit <code>mnTS()</code>.</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Answer 4d
-</div>
-<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
-</div>
-<div id="callout-20" class="callout-20-contents callout-collapse collapse">
-<div class="callout-body-container callout-body">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>start_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>mnTS_mod_new_X <span class="ot">&lt;-</span> <span class="fu">mnTS</span>(<span class="at">Y =</span> story_pollen_matrix[sample_idx, ],</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">X =</span> new_X, <span class="at">Tsample =</span> sample_idx,</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>                       <span class="at">B0.start =</span> B0.start.mnTS.new_X, <span class="at">B0.fixed =</span> B0.fixed.mnTS.new_X,</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">B.start =</span> B.start.mnTS.new_X, <span class="at">B.fixed =</span> B.fixed.mnTS.new_X,</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">C.start =</span> C.start.mnTS.new_X, <span class="at">C.fixed =</span> C.fixed.mnTS.new_X,</span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">V.start =</span> V.start.mnTS.new_X, <span class="at">V.fixed =</span> V.fixed.mnTS.new_X,</span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">dispersion.fixed =</span> <span class="dv">1</span>, <span class="at">maxit.optim =</span> <span class="fl">1e+6</span>)</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="co"># maxit.optim is the max number of iterations the optimiser will complete before stopping.</span></span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="co"># increase maxit.optim if the model needs a lot of time to fit.</span></span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>end_time <span class="ot">&lt;-</span> <span class="fu">Sys.time</span>()</span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>end_time <span class="sc">-</span> start_time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-</div>
+<p>Which model gives the lowest AIC? Does that agree with what you might expect from the data, and what hypothesis are we testing by adding the interaction?</p>
 </section>
 </section>
 
