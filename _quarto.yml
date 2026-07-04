@@ -1,0 +1,18 @@
+title: "State-Space Methods for Testing Hypotheses About Environmental Drivers and Biotic Interactions in Community and Paleoecological Time Series"
+author:
+  name: "Quinn Asena, Jack Williams, and Tony Ives"
+date: today
+bibliography: refs.bib
+from: markdown+emoji
+format:
+  html:
+    code-fold: true
+    toc: true
+    link-external-newwindow: true
+    embed-resources: true
+execute:
+  cache: false
+  message: false
+theme:
+  light: flatly
+  dark: darkly

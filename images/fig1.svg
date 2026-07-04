@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="174.9826mm"
+   height="91.762115mm"
+   viewBox="0 0 174.9826 91.762115"
+   version="1.1"
+   id="svg5"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient32553">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="0"
+         id="stop32549" />
+      <stop
+         style="stop-color:#b0b555;stop-opacity:0.36477989;"
+         offset="1"
+         id="stop32551" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient31539">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="0"
+         id="stop31535" />
+      <stop
+         style="stop-color:#55b5b0;stop-opacity:0.36477989;"
+         offset="1"
+         id="stop31537" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient14463">
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="0"
+         id="stop14461" />
+      <stop
+         style="stop-color:#557db5;stop-opacity:0.36477989;"
+         offset="1"
+         id="stop14459" />
+    </linearGradient>
+    <marker
+       style="overflow:visible"
+       id="Arrow2-8"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="arrow2L-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2-2-3"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="arrow2L-9-9" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2-0-20"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="arrow2L-8-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2-0-2-7"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="arrow2L-8-3-1" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2-0-0-73"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="arrow2L-8-1-7" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2-0-2-6-5"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="7.6999998"
+       markerHeight="5.5999999"
+       viewBox="0 0 7.7 5.6"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.7)"
+         d="M -2,-4 9,0 -2,4 c 2,-2.33 2,-5.66 0,-8 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:none"
+         id="arrow2L-8-3-8-5" />
+    </marker>
+    <linearGradient
+       xlink:href="#linearGradient14463"
+       id="linearGradient911"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0924105,0,0,0.78908393,-3.6636114,12.696525)"
+       x1="39.350231"
+       y1="48.385563"
+       x2="178.15601"
+       y2="48.385563" />
+    <linearGradient
+       xlink:href="#linearGradient31539"
+       id="linearGradient913"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0924105,0,0,2.206792,-3.6636156,-20.514331)"
+       x1="39.350231"
+       y1="48.385563"
+       x2="178.15601"
+       y2="48.385563" />
+    <linearGradient
+       xlink:href="#linearGradient32553"
+       id="linearGradient915"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0924105,0,0,0.88856767,-3.6636063,79.829502)"
+       x1="39.350231"
+       y1="48.385563"
+       x2="178.15601"
+       y2="48.385563" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-18.884217,-148.52409)">
+    <g
+       id="g38601-2"
+       transform="matrix(1.1589099,0,0,1,-27.060718,106.96755)">
+      <rect
+         style="fill:url(#linearGradient911);fill-opacity:1;stroke:none;stroke-width:0.547273;stroke-dasharray:none;stroke-opacity:1"
+         id="rect14434-7"
+         width="150.98897"
+         height="18.640509"
+         x="39.644958"
+         y="41.556541"
+         ry="0" />
+      <rect
+         style="fill:url(#linearGradient913);fill-opacity:1;stroke:none;stroke-width:0.915214;stroke-dasharray:none;stroke-opacity:1"
+         id="rect14434-6-2"
+         width="150.98897"
+         height="52.130989"
+         x="39.644958"
+         y="60.197052"
+         ry="0" />
+      <rect
+         style="fill:url(#linearGradient915);fill-opacity:1;stroke:none;stroke-width:0.580747;stroke-dasharray:none;stroke-opacity:1"
+         id="rect14434-6-7-2"
+         width="150.98897"
+         height="20.99061"
+         x="39.644966"
+         y="112.32804"
+         ry="0" />
+      <text
+         xml:space="preserve"
+         style="font-size:3.52777px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:none;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+         x="156.44926"
+         y="50.127747"
+         id="text41114-2"><tspan
+           id="tspan41112-8"
+           style="stroke-width:0.5"
+           x="156.44926"
+           y="50.127747">at</tspan></text>
+    </g>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.542376;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4446-8"
+       width="25.218378"
+       height="25.218378"
+       x="-168.40346"
+       y="210.09219"
+       transform="matrix(0.87379419,-0.48629591,0.87379419,0.48629591,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:none;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       x="56.708748"
+       y="155.80339"
+       id="text5278-8"><tspan
+         id="tspan5276-2"
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-dasharray:none"
+         x="56.708748"
+         y="155.80339">State variables</tspan><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-dasharray:none"
+         x="56.708748"
+         y="160.21312"
+         id="tspan10570-4">(e.g., pollen or diatom counts)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;text-align:center;text-anchor:middle;fill:none;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       x="120.35366"
+       y="155.80339"
+       id="text5278-5-0"><tspan
+         id="tspan5276-6-8"
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-dasharray:none"
+         x="120.35366"
+         y="155.80339">Covariate data</tspan><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-dasharray:none"
+         x="120.35366"
+         y="160.21312"
+         id="tspan10570-7-9">(e.g., charcoal, climate)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="58.865261"
+       y="183.32233"
+       id="text6080-82"><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="58.865261"
+         y="183.32233"
+         id="tspan6082-1">Handling focal taxa </tspan><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="58.865261"
+         y="187.73206"
+         id="tspan10617-1">and groups</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.542376;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4446-54-5"
+       width="25.218378"
+       height="25.218378"
+       x="-131.95094"
+       y="246.59445"
+       transform="matrix(0.87379419,-0.48629591,0.87379419,0.48629591,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="122.51194"
+       y="180.9173"
+       id="text6080-8-3"><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="122.51194"
+         y="180.9173"
+         id="tspan10617-6-5">Interpolate or </tspan><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="122.51194"
+         y="185.32703"
+         id="tspan11384-6">aggregate </tspan><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="122.51194"
+         y="189.73674"
+         id="tspan11386-9">covariates</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.542376;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4446-54-9-9"
+       width="25.218378"
+       height="25.218378"
+       x="-168.23288"
+       y="245.21135"
+       transform="matrix(0.87379419,-0.48629591,0.87379419,0.48629591,0,0)" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="89.248177"
+       y="199.76433"
+       id="text6080-8-7-9"><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="89.248177"
+         y="199.76433"
+         id="tspan11386-1-6">Handling temporal</tspan><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="89.248177"
+         y="204.17406"
+         id="tspan12161-7">resolution (binning)</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4448-9-1"
+       width="26.861719"
+       height="13.222377"
+       x="75.920364"
+       y="223.15157" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="89.530365"
+       y="231.00989"
+       id="text6080-8-7-6-3-4"><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="89.530365"
+         y="231.00989"
+         id="tspan12197-6-5">Fit model H2</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4448-9-1-9"
+       width="26.861719"
+       height="13.222377"
+       x="45.08559"
+       y="223.15157" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="58.695591"
+       y="231.00989"
+       id="text6080-8-7-6-3-4-9"><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="58.695591"
+         y="231.00989"
+         id="tspan12197-6-5-2">Fit model H1</tspan></text>
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4448-9-1-6"
+       width="26.861719"
+       height="13.222377"
+       x="108.77967"
+       y="223.15157" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.52778px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="122.38964"
+       y="231.00989"
+       id="text6080-8-7-6-3-4-8"><tspan
+         style="font-size:3.52778px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="122.38964"
+         y="231.00989"
+         id="tspan12197-6-5-5">Fit model H...m</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.58611px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="167.1138"
+       y="158.6673"
+       id="text6080-8-7-6-6-4-5"><tspan
+         style="font-size:4.58611px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="167.1138"
+         y="158.6673"
+         id="tspan12197-5-6-5">Data</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.58611px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="167.03319"
+       y="191.97832"
+       id="text6080-8-7-6-6-4-7-1"><tspan
+         style="font-size:4.58611px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="167.03319"
+         y="191.97832"
+         id="tspan12197-5-6-1-7">Decisions about</tspan><tspan
+         style="font-size:4.58611px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="167.03319"
+         y="197.71095"
+         id="tspan42981-5">the data</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:4.58611px;font-family:Arial;-inkscape-font-specification:Arial;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.499999;stroke-dasharray:none;stroke-opacity:1"
+       x="167.03319"
+       y="228.53912"
+       id="text6080-8-7-6-6-4-7-7-4"><tspan
+         style="font-size:4.58611px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="167.03319"
+         y="228.53912"
+         id="tspan42981-7-8">Parameterization</tspan><tspan
+         style="font-size:4.58611px;text-align:center;text-anchor:middle;stroke-width:0.5"
+         x="167.03319"
+         y="234.27176"
+         id="tspan43017-1">and hypothesis testing</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2-8)"
+       d="m 58.565573,164.0599 v 3.26484"
+       id="path12903-5" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2-2-3)"
+       d="m 122.36174,164.00191 v 3.26484"
+       id="path12903-6-8" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2-0-20)"
+       d="m 106.91312,189.77648 -2.30859,2.3086"
+       id="path12903-1-39" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2-0-2-7)"
+       d="m 72.295998,189.86189 2.30859,2.30859"
+       id="path12903-1-3-9" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2-0-0-73)"
+       d="m 104.41771,210.5838 v 5.00844"
+       id="path12903-1-2-9" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow2-0-2-6-5)"
+       d="m 74.791398,210.71483 v 5.00841"
+       id="path12903-1-3-0-2" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.541;stroke-dasharray:none;stroke-opacity:1"
+       d="m 29.898359,162.77316 6.12942,-10.61647 h 50.29695 l -5.9008,10.65643 -50.52557,-0.04"
+       id="path3301-1" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.541;stroke-dasharray:none;stroke-opacity:1"
+       d="m 94.03619,162.77316 6.12942,-10.61647 h 50.29695 l -5.9008,10.65643 -50.52557,-0.04"
+       id="path3301-7" />
+  </g>
+</svg>
