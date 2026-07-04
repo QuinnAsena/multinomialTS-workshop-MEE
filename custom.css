@@ -1,0 +1,35 @@
+/* .reveal .slides section ul li {
+  margin-bottom: 2em !important;
+}
+
+.reveal .slides section ul ul li {
+  margin-bottom: 0.8em !important;
+} */
+
+/* Any top-level list item */
+.reveal .slides section ul > li,
+.reveal .slides section ol > li {
+  padding-bottom: 1em !important;
+}
+
+/* Any nested list item */
+.reveal .slides section ul ul li,
+.reveal .slides section ul ol li,
+.reveal .slides section ol ul li,
+.reveal .slides section ol ol li {
+  padding-bottom: 0em !important;
+}
+
+
+/* Tighter spacing for specific slide */
+.reveal .slides section.tight ul > li,
+.reveal .slides section.tight ol > li {
+  padding-bottom: 0.2em !important;
+}
+
+.reveal .slides section.tight ul ul li,
+.reveal .slides section.tight ul ol li,
+.reveal .slides section.tight ol ul li,
+.reveal .slides section.tight ol ol li {
+  padding-bottom: 0em !important;
+}

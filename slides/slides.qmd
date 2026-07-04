@@ -1,9 +1,9 @@
 ---
 title: "State-Space Methods for Community and Paleoecological Time Series"
-subtitle: "multinomialTS — MEE demo"
-author: "Quinn Asena, Jack Williams, and Tony Ives"
+subtitle: "multinomialTS"
+author: "Quinn Asena • Jack Williams • and Tony Ives"
 date: today
-bibliography: ../refs.bib
+# bibliography: ../refs.bib
 from: markdown+emoji
 format:
   revealjs:
@@ -12,11 +12,17 @@ format:
     incremental: false
     embed-resources: true
     link-external-newwindow: true
+    logo: ./figures-svg/dark-mode.png
 execute:
   echo: true
   cache: false
   message: false
+
+title-slide-attributes:
+  data-background-color: "#054746ff"
 ---
+
+
 
 ## Welcome {.smaller}
 
