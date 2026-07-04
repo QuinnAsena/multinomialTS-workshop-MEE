@@ -80,6 +80,60 @@ head(story_char_wide)
 The `age` and `depth` columns are kept for now as common variables to match the
 two tibbles; they are removed before fitting.
 
+## Plotting the raw data
+
+Before any binning, let's look at the raw data. The state variables and the
+covariate are on different scales (and the charcoal record is sampled more
+finely and extends deeper), so we plot the species separately from the charcoal
+accumulation rate and combine the two with `patchwork`. The charcoal panel is
+clipped to the pollen extent so the age axes line up.
+
+```{r}
+#| label: fig-raw-data
+#| code-fold: true
+#| warning: false
+#| fig-cap: "Raw (unbinned) data: pollen counts of the focal taxa and the 'hardwood' and 'other' groups (left), and the charcoal accumulation rate covariate (right, clipped to the pollen extent), combined with patchwork."
+#| fig-width: 10
+#| fig-height: 5
+
+# State variables: pivot the aggregated taxa to long format
+# (ungroup first: story_pollen_wide is grouped by depth, which select() would otherwise re-add)
+species_long <- story_pollen_wide |>
+  ungroup() |>
+  select(age, other, hardwood, Ulmus, `Fagus grandifolia`, Quercus) |>
+  pivot_longer(-age, names_to = "variablename", values_to = "value") |>
+  mutate(variablename = factor(
+    variablename,
+    levels = c("other", "hardwood", "Ulmus", "Fagus grandifolia", "Quercus"),
+    labels = c("other", "hardwood", "Ulmus", "Fagus", "Quercus")
+  ))
+
+p_species <- ggplot(species_long, aes(x = age, y = value)) +
+  geom_area(colour = "grey90") +
+  geom_segment(aes(x = age, xend = age, y = 0, yend = value),
+               colour = "grey30", linewidth = 0.6) +
+  scale_x_reverse(breaks = scales::breaks_pretty(n = 6)) +
+  coord_flip() +
+  labs(y = "Pollen counts", x = "Time (ybp)") +
+  facet_wrap(~variablename, nrow = 1) +
+  theme_minimal() +
+  theme(text = element_text(size = 10))
+
+# Covariate: clip charcoal to the pollen extent so the age axes align
+p_char <- story_char_wide |>
+  filter(age <= max(story_pollen_wide$age)) |>
+  ggplot(aes(x = age, y = char_acc)) +
+  geom_area(colour = "grey30", fill = "grey85", linewidth = 0.4) +
+  scale_x_reverse(breaks = scales::breaks_pretty(n = 6)) +
+  coord_flip() +
+  labs(y = "Charcoal acc. rate", x = NULL) +
+  theme_minimal() +
+  theme(text = element_text(size = 10))
+
+# Combine the species panels and the covariate panel with patchwork
+p_species + p_char + plot_layout(widths = c(5, 1.5))
+```
+
 # State variables $Y$ and the driver
 
 We start by choosing a resolution for the model predictions (e.g., predicting
@@ -137,42 +191,6 @@ story_binned <- bind_cols(bins = bins, story_join) |>
   ) |>
   arrange(desc(age))
 # Note: gaps in the pollen data are now filled with 0's, not NA
-```
-
-## Plotting the aggregated taxa and the driver
-
-Here are the aggregated state variables (`other`, `hardwood`, and the three focal
-taxa) alongside the environmental driver (`char_acc`), at the `r bin_width`-year
-resolution that goes into the model. Note the different scale for charcoal
-accumulation versus pollen counts.
-
-```{r}
-#| label: fig-taxa-driver
-#| code-fold: true
-#| warning: false
-#| fig-cap: "Binned state variables (pollen counts of the focal taxa and the 'hardwood' and 'other' groups) and the environmental driver (charcoal accumulation), at 50-year resolution."
-#| fig-width: 9
-#| fig-height: 5
-
-demo_long <- story_binned |>
-  select(age, char_acc, other, hardwood, Ulmus, `Fagus grandifolia`, Quercus) |>
-  pivot_longer(-age, names_to = "variablename", values_to = "value") |>
-  mutate(variablename = factor(
-    variablename,
-    levels = c("char_acc", "other", "hardwood", "Ulmus", "Fagus grandifolia", "Quercus"),
-    labels = c("Charcoal acc.", "other", "hardwood", "Ulmus", "Fagus", "Quercus")
-  ))
-
-ggplot(demo_long, aes(x = age, y = value)) +
-  geom_area(colour = "grey90") +
-  geom_segment(aes(x = age, xend = age, y = 0, yend = value),
-               colour = "grey30", linewidth = 0.6) +
-  scale_x_reverse(breaks = scales::breaks_pretty(n = 6)) +
-  coord_flip() +
-  labs(y = "Pollen counts / charcoal accumulation", x = "Time (ybp)") +
-  facet_wrap(~variablename, nrow = 1, scales = "free_x") +
-  theme_minimal() +
-  theme(text = element_text(size = 10))
 ```
 
 ## Building the model matrices
