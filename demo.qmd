@@ -40,7 +40,7 @@ or cluster analysis, and we recommend it as complementary to those methods.
 This is a short coding demo. A more detailed walkthrough is in
 `state-space-walkthrough.qmd`, and further resources are in the
 [main workshop repository](https://github.com/QuinnAsena/multinomialTS-workshop).
-The HTML version is hosted at: 
+An HTML version of the full walkthrough is hosted at
 [multinomialTS-workshop/](https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html).
 In this demo we will use the example data in the package to:
 
@@ -51,7 +51,7 @@ In this demo we will use the example data in the package to:
 # The data
 
 We will work with the built-in `story` data (Story Lake, IN; [@schlenker2024]). The taxa have already been
-wrangled into focal taxa (*Ulmus* / elm,  *Fagus grandifolia* / American beech,  *Quercus* / oak) plus a
+wrangled into focal taxa (*Ulmus* / elm, *Fagus grandifolia* / American beech, *Quercus* / oak) plus a
 `hardwood` group and an `other` reference group. Full details of that wrangling
 step are in the extended walkthrough.
 
@@ -75,12 +75,12 @@ And the covariate ($X$):
 head(story_char_wide)
 ```
 
-I keep the `age` and `depth` columns are for now as common variables to join the
+I keep the `age` and `depth` columns for now as common variables to join the
 two tibbles later; they are removed before fitting.
 
 ## Plotting the raw data
 
-First, let's plot at the pollen count data. Charcoal is sampled at a finer temporal resolution than the pollen data, this is ideal for the model which can handles a finer temporal resolution of covariates.
+First, let's plot the pollen count data. Charcoal is sampled at a finer temporal resolution than the pollen data; this is ideal for the model, which can handle a finer temporal resolution of covariates.
 
 ```{r}
 #| label: fig-raw-data
@@ -117,7 +117,7 @@ p_species <- ggplot(species_long, aes(x = age, y = value)) +
 p_char <- story_char_wide |>
   filter(age <= max(story_pollen_wide$age)) |>
   ggplot(aes(x = age, y = char_acc)) +
-  geom_line(colour = "grey40", size = .6) +
+  geom_line(colour = "grey40", linewidth = .6) +
   geom_point(size = 1) +
   scale_x_reverse(breaks = scales::breaks_pretty(n = 6)) +
   coord_flip() +
@@ -187,8 +187,6 @@ we take the *sum* (required by the underlying multinomial distribution).
 We can have a finer temporal resolution of the covariates, but we _cannot_ have a finer resolution of the state variables. If your data have a finer resolution of the state variables then it is possible to interpolate the covariate data to match.
 :::
 
-
-
 ```{r}
 #| label: lst-binned
 bin_width <- 50
@@ -242,8 +240,6 @@ story_char_matrix_scaled <- story_binned |>
 head(story_char_matrix_scaled)
 ```
 
-
-
 # Fitting `multinomialTS`
 
 We now have a temporal resolution of `r bin_width`-year bins, a site-by-species
@@ -256,7 +252,7 @@ matrix $Y$, and a binned and scaled covariate matrix $X$.
 values for $B$, $B0$ (intercept), and $V$. We get those from `mnGLMM()`, which
 returns estimates for $B$ and $V$ (not $C$) and assumes no time gaps in the data.
 
-For `mnGLMM()`. We need:
+For `mnGLMM()` we need:
 
 - A vector that indicates the row indices where there are state variable observations: `sample_idx`
 - An integer number of covariates (+ 1 for `mnGLMM()`): `p` 
@@ -393,10 +389,6 @@ mnTS_mod_int <- readRDS("./outputs/mnTS_mod_int.rds")
 ```
 
 :::
-
-
-
-
 
 # Interpreting the output
 
