@@ -1,7 +1,7 @@
 ---
-title: "multinomialTS — coding demo"
+title: "multinomialTS coding demo"
 author:
-  name: "Quinn Asena, Jack Williams, and Tony Ives"
+  name: "Quinn Asena • Jack Williams • Tony Ives"
 date: today
 bibliography: refs.bib
 from: markdown+emoji
@@ -30,7 +30,7 @@ source("./install_workshop.R")
 # Introduction
 
 `multinomialTS` fits a state-space model to multinomially distributed ecological
-time series (e.g., pollen counts). One of the primary goals is to test multiple
+time series (community count data such as pollen counts). One of the primary goals is to test multiple
 hypotheses about the data: which environmental drivers have the strongest effects
 on which taxa, and are interactions among taxa or abiotic variables driving
 change in the system? The approach estimates coefficients for taxa interactions
@@ -40,20 +40,18 @@ or cluster analysis, and we recommend it as complementary to those methods.
 This is a short coding demo. A more detailed walkthrough is in
 `state-space-walkthrough.qmd`, and further resources are in the
 [main workshop repository](https://github.com/QuinnAsena/multinomialTS-workshop).
+The HTML version is hosted at: 
+[multinomialTS-workshop/](https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html).
+In this demo we will use the example data in the package to:
 
-**In this demo we will:**
-
-- Read in the pre-wrangled data (taxa already aggregated into focal taxa and groups)
-- Plot the state variables and the environmental driver
-- Choose a temporal resolution and bin the data
+- Choose a temporal resolution for prediction
 - Find initial conditions with `mnGLMM()`
 - Fit `mnTS()` with and without species interactions
-- Compare the models
 
 # The data
 
-We work with the built-in `story` data (Story Lake). The taxa have already been
-wrangled into focal taxa (*Ulmus*, *Fagus grandifolia*, *Quercus*) plus a
+We will work with the built-in `story` data (Story Lake, IN; [@schlenker2024]). The taxa have already been
+wrangled into focal taxa (*Ulmus* / elm,  *Fagus grandifolia* / American beech,  *Quercus* / oak) plus a
 `hardwood` group and an `other` reference group. Full details of that wrangling
 step are in the extended walkthrough.
 
@@ -77,24 +75,20 @@ And the covariate ($X$):
 head(story_char_wide)
 ```
 
-The `age` and `depth` columns are kept for now as common variables to match the
-two tibbles; they are removed before fitting.
+I keep the `age` and `depth` columns are for now as common variables to join the
+two tibbles later; they are removed before fitting.
 
 ## Plotting the raw data
 
-Before any binning, let's look at the raw data. The state variables and the
-covariate are on different scales (and the charcoal record is sampled more
-finely and extends deeper), so we plot the species separately from the charcoal
-accumulation rate and combine the two with `patchwork`. The charcoal panel is
-clipped to the pollen extent so the age axes line up.
+First, let's plot at the pollen count data. Charcoal is sampled at a finer temporal resolution than the pollen data, this is ideal for the model which can handles a finer temporal resolution of covariates.
 
 ```{r}
 #| label: fig-raw-data
 #| code-fold: true
 #| warning: false
-#| fig-cap: "Raw (unbinned) data: pollen counts of the focal taxa and the 'hardwood' and 'other' groups (left), and the charcoal accumulation rate covariate (right, clipped to the pollen extent), combined with patchwork."
+#| fig-cap: "Raw (unbinned) data: pollen counts of the focal taxa and the 'hardwood' and 'other' groups (left), and the charcoal accumulation rate covariate (right)."
 #| fig-width: 10
-#| fig-height: 5
+#| fig-height: 8
 
 # State variables: pivot the aggregated taxa to long format
 # (ungroup first: story_pollen_wide is grouped by depth, which select() would otherwise re-add)
@@ -123,15 +117,17 @@ p_species <- ggplot(species_long, aes(x = age, y = value)) +
 p_char <- story_char_wide |>
   filter(age <= max(story_pollen_wide$age)) |>
   ggplot(aes(x = age, y = char_acc)) +
-  geom_area(colour = "grey30", fill = "grey85", linewidth = 0.4) +
+  geom_line(colour = "grey40", size = .6) +
+  geom_point(size = 1) +
   scale_x_reverse(breaks = scales::breaks_pretty(n = 6)) +
   coord_flip() +
   labs(y = "Charcoal acc. rate", x = NULL) +
   theme_minimal() +
-  theme(text = element_text(size = 10))
+  theme(text = element_text(size = 10),
+        axis.text.y = element_blank())
 
 # Combine the species panels and the covariate panel with patchwork
-p_species + p_char + plot_layout(widths = c(5, 1.5))
+p_species + p_char + plot_layout(widths = c(.8, .2))
 ```
 
 # State variables $Y$ and the driver
@@ -142,10 +138,17 @@ ecological process at 50- or 100-year intervals).
 ```{r}
 #| label: lst-spacing-checks
 # Time-span divided by number of observations
-max(story_pollen_wide$age) / nrow(story_pollen_wide)
+max_over_n <- max(story_pollen_wide$age) / nrow(story_pollen_wide)
 # The range and average of the age differences between successive observations
-range(diff(story_pollen_wide$age))
-mean(diff(story_pollen_wide$age))
+diff_rng <- range(diff(story_pollen_wide$age))
+diff_mean <- mean(diff(story_pollen_wide$age))
+
+cat(
+  "\n",
+  "Max age / nrow = ", max_over_n, "\n",
+  "Range of age differences = ", diff_rng[1], " to ", diff_rng[2], "\n",
+  "Mean age difference = ", diff_mean, "\n"
+)
 ```
 
 Binning at around 50–75 years keeps most of our data in independent bins. We
@@ -153,8 +156,8 @@ apply the same bin-width to both the state variables and the covariate.
 
 ## Joining and binning
 
-Charcoal was sampled to a greater depth than the pollen, so we clip the covariate
-to the extent of the state variables and join by the common `age` variable.
+Charcoal was sampled at a finer resolution, and to a greater depth than the pollen, so we clip the covariate
+to the extent of the state variables and join by the common `age` and `depth` variables.
 
 ```{r}
 #| label: lst-join
@@ -165,10 +168,26 @@ story_join <- story_char_wide |>
 
 # Always double-check dimensions before/after joining!
 dim(story_join)
+# Note that there are now gaps in the pollen data but not the charcoal
+head(story_join)
 ```
 
-Now we bin. For covariates we take the *average* value per bin; for pollen counts
+::: {.callout-tip}
+## Ask me questions!
+What questions do you have so far?
+:::
+
+Once we have chosen a prediction resolution, we can bin the data. 
+For covariates we take the *average* value per bin; for pollen counts
 we take the *sum* (required by the underlying multinomial distribution).
+
+::: {.callout-tip}
+## Note
+
+We can have a finer temporal resolution of the covariates, but we _cannot_ have a finer resolution of the state variables. If your data have a finer resolution of the state variables then it is possible to interpolate the covariate data to match.
+:::
+
+
 
 ```{r}
 #| label: lst-binned
@@ -193,6 +212,13 @@ story_binned <- bind_cols(bins = bins, story_join) |>
 # Note: gaps in the pollen data are now filled with 0's, not NA
 ```
 
+::: {.callout-important}
+## Important
+We want the model to run from the past to the present, and the model runs from the top of the matrix to the bottom. So we want to make sure that the top row of the data is the _oldest_ date. Palaeo-data are usually ordered from the top of the core to the bottom (present to past), so we `arrange(desc(age))`.
+:::
+
+
+
 ## Building the model matrices
 
 `multinomialTS` requires two matrices: a site-by-species matrix $Y$, and a
@@ -216,6 +242,8 @@ story_char_matrix_scaled <- story_binned |>
 head(story_char_matrix_scaled)
 ```
 
+
+
 # Fitting `multinomialTS`
 
 We now have a temporal resolution of `r bin_width`-year bins, a site-by-species
@@ -225,8 +253,17 @@ matrix $Y$, and a binned and scaled covariate matrix $X$.
 
 `mnTS()` estimates biotic interactions ($C$ matrix), taxa-driver relationships
 ($B$ matrix), and cross-correlated error ($V$ matrix), but it needs starting
-values. We get those from `mnGLMM()`, which returns estimates for $B$ and $V$
-(not $C$) and assumes no time gaps in the data.
+values for $B$, $B0$ (intercept), and $V$. We get those from `mnGLMM()`, which
+returns estimates for $B$ and $V$ (not $C$) and assumes no time gaps in the data.
+
+For `mnGLMM()`. We need:
+
+- A vector that indicates the row indices where there are state variable observations: `sample_idx`
+- An integer number of covariates (+ 1 for `mnGLMM()`): `p` 
+- An integer of the number of state variables: `n`
+- A matrix of starting values for $B$: `B.start.glmm`
+- A matrix of $B$ parameters to estimate: `B.fixed.glmm` 
+- A matrix of $V$ parameters to estimate: `V.fixed.glmm`
 
 ::: {.callout-tip}
 Arguments for *starting* values are suffixed `.start`; arguments for the
@@ -357,28 +394,31 @@ mnTS_mod_int <- readRDS("./outputs/mnTS_mod_int.rds")
 
 :::
 
+
+
+
+
 # Interpreting the output
 
-`coef()` and `summary()` show the model output. Here are the coefficients of the
-interaction model:
+`coef()` and `summary()` show the model output:
 
+::: {.panel-tabset}
+
+## Without interactions
+
+```{r}
+coef(mnTS_mod)
+```
+
+
+## With interactions
 ```{r}
 coef(mnTS_mod_int)
 ```
+
+:::
 
 We have found that bootstrapping provides better estimates of standard errors
 (and P-values). The `boot()` function bootstraps the model but can take a long
 time; we don't do it here, but we strongly recommend bootstrapping your final
 models — see the [full walkthrough](state-space-walkthrough.qmd).
-
-## Comparing models
-
-A quick comparison of AIC between the model without and with interactions:
-
-```{r}
-data.frame(without_interactions = mnTS_mod$AIC,
-           with_interactions = mnTS_mod_int$AIC)
-```
-
-Which model gives the lowest AIC? Does that agree with what you might expect from
-the data, and what hypothesis are we testing by adding the interaction?
