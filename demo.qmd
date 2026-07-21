@@ -414,3 +414,9 @@ We have found that bootstrapping provides better estimates of standard errors
 (and P-values). The `boot()` function bootstraps the model but can take a long
 time; we don't do it here, but we strongly recommend bootstrapping your final
 models — see the [full walkthrough](state-space-walkthrough.qmd).
+
+
+# References
+
+::: {#refs}
+:::

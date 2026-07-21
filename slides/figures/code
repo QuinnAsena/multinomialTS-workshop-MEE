@@ -1,0 +1,96 @@
+# New figures created in simulation_targets_sunfish
+# Will not run here.
+
+mods_boot_68_B <- mods_boot_68 |>
+  filter(grepl(paste(names(X_names_list), collapse = "|"), name), mod == "mnTS_mod_pqf_refit") |>
+  separate_wider_delim(cols = name, delim = ".", names = c("cov", "name")) |>
+  mutate(name = str_replace_all(name,
+                                pattern = "y2|y3|y4|y5|y6",
+                                replacement = function(x) case_when(
+                                  x == "y2" ~ "_P.strobus_",
+                                  x == "y3" ~ "_Tsuga_",
+                                  x == "y4" ~ "_Fagus_",
+                                  x == "y5" ~ "_Quercus_",
+                                  x == "y6" ~ "_Betula_",
+                                  TRUE ~ x)))
+
+mod_plots_B <- mods_boot_68_B |>
+  mutate(panel = "Lake level effect") |>
+  ggplot(aes(x = name, y = boot_mean)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.2) +
+  geom_errorbar(aes(ymin = lower_68, ymax = upper_68),
+               width = .2, alpha = 0.5) +
+  labs(x = "Taxa", y = "Coefficient") +
+  facet_wrap(~panel) +  # adds the strip
+  theme_bw() +
+  theme(
+   axis.text.x.bottom = element_markdown(size = 10, angle = 45, hjust = 1),
+   axis.title = element_text(size = 10),
+   strip.background = element_rect(fill = NA),
+   legend.position = "inside",
+   legend.position.inside = c(.11, .91),
+   legend.text = element_text(size = 8),
+   legend.title = element_text(size = 8),
+   legend.background = element_rect(fill = NA)
+  )
+
+
+## Bootstrap plotting C ---------------------------------------------------
+
+names_factor <- c(map2_vec(c("Other", target_spp), c("Other", target_spp), \(x, y) paste(x, y, sep = ".")),
+                  c("Fagus.Quercus", "Quercus.Fagus", "Betula.Tsuga",
+                    "Tsuga.Betula", "Tsuga.Fagus", "Fagus.Tsuga",
+                    "P.strobu.Tsuga", "Tsuga.P.strobu", "Tsuga.Quercus", "Quercus.Tsuga",
+                    "P.strobu.Fagus", "Fagus.P.strobu", "P.strobu.Quercus", "Quercus.P.strobu"))
+
+
+mods_boot_68_C <- mods_boot_68 |>
+  filter(!grepl(paste(c(names(X_names_list), "v."), collapse = "|"), name),
+         !name %in% c("y2", "y3", "y4", "y5", "y6"),
+         mod == "mnTS_mod_pqf_refit") |>
+  mutate(name = str_remove(name, "sp.")) |>
+  # separate_wider_delim(cols = name, delim = ".", names = c("cov", "name")) |>
+  mutate(name = str_replace_all(name,
+                                pattern = "y1|y2|y3|y4|y5|y6",
+                                replacement = function(x) case_when(
+                                  x == "y1" ~ "Other",
+                                  x == "y2" ~ "P.strobu",
+                                  x == "y3" ~ "Tsuga",
+                                  x == "y4" ~ "Fagus",
+                                  x == "y5" ~ "Quercus",
+                                  x == "y6" ~ "Betula",
+                                  TRUE ~ x)),
+         name = fct(name, levels = names_factor))
+         # name = str_replace_all(name, pattern = "P\\.strobu", replacement = "_P.strobus_"),
+         # name = str_replace_all(name, pattern = "Tsuga", replacement = "_Tsuga_"))
+
+
+mod_plots_C <- mods_boot_68_C |>
+  filter(name %in% c("P.strobu.Fagus", "P.strobu.Quercus", "Fagus.P.strobu", "Quercus.P.strobu")) |>
+  mutate(panel = "Species interactions") |>
+  ggplot(aes(x = name, y = boot_mean)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", alpha = 0.2) +
+  geom_errorbar(aes(ymin = lower_68, ymax = upper_68),
+                width = .2, alpha = 0.5) +
+  labs(x = "Taxa", y = NULL) +
+  facet_wrap(~panel) +  # adds the strip
+  theme_bw() +
+  theme(
+    axis.text = element_markdown(size = 10, angle = 45, hjust = 1),
+    axis.title = element_text(size = 10),
+    legend.text = element_text(size = 8),
+    strip.background = element_rect(fill = NA)
+  )
+
+sunfish_B_C_MEE <- mod_plots_B + mod_plots_C + plot_layout(width = c(0.7, 0.3))
+
+ggsave(
+  filename = "C:/Users/asenaq/Documents/GitHub/multinomialTS-workshop-MEE/slides/figures/sunfish_B_C_MEE.svg",
+  plot = sunfish_B_C_MEE,
+  device = "svg",
+  width = 8,
+  height = 6,
+  units = "in"
+)
