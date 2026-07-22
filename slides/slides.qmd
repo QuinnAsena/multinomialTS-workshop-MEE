@@ -117,7 +117,7 @@ Two case studies to demonstrate the decision process and fitting process of `mul
   - choosing focal taxa and reference group
   - choosing window-span/prediction resolution
 - Decisions about the model
-  - set up multiple working hypotheses
+  - set up multiple working hypotheses [@chamberlin1897]
   - fit the model to hypotheses or components of each hypothesis
 
 Each case study will follow the arc from setting up hypotheses, choosing focal taxa, and fitting the model.
@@ -220,7 +220,7 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 
 ::: {.callout-note}
 # Supported hypotheses
-Local conditions most important to hemlock and pine. Interactions are important to pine-beech and pine-oak dynamics. Nothing significant at 0.05, but we do not recommend relying on P-values to test hypotheses.
+Local conditions most important to hemlock and pine. Interactions are important to pine-beech and pine-oak dynamics. Nothing significant at 0.05, but we do not recommend relying on P-values to test hypotheses [@anderson2000].
 :::
 
 ## Comparison of case-studies {.smaller}
@@ -250,6 +250,11 @@ _`multinomialTS` does not show causality but lends statistical support to hypoth
 - Likely to be missing explanatory power from unmeasured drivers
 :::
 ::::
+
+## Outro
+
+Note that for both case studies, I only showed results for testing one hypothesis/component. The full analyses for both sites includes multiple model fits to piece together the full story of ecosystem dynamics.
+
 
 # Thank you for listening!
 
