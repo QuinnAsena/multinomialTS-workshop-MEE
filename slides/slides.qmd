@@ -26,7 +26,7 @@ title-slide-attributes:
 
 ## Welcome {.smaller}
 
-Here we going to demonstrate the `multinomialTS` r package on two contrasting palaeoecological datasets.
+Here we're going to demonstrate the `multinomialTS` R package on two contrasting palaeoecological datasets.
 
 This will be followed by a demo coding session...
 
@@ -47,10 +47,8 @@ This will be followed by a demo coding session...
 :::
 ::::
 
+![](./figures/people.png){fig-align="center" width="700" height="400" fig-alt="Group photo of the project collaborators"}
 
-<div style="margin-left: 120pt;">
-  <img src="./figures/people.png" width="700" height="400">
-</div>
 
 
 ## The problem {.smaller}
@@ -64,18 +62,18 @@ If 3 species and 60% are species 1, 30% are species 2, then species 3 must be 10
 covariates of mixed types.
 
 
-## State-space modelling {.smaller}
+## State-space modelling - what it estimates {.smaller}
 
 _State-space modelling goes beyond descriptive approaches and attempts to estimate:_
 
 <br>
 
-- Autoregressive / density dependent processes 
+- Autoregressive / density-dependent processes
 - Interspecific interactions
-- taxa-driver relationships
+- Taxa-driver relationships
 - Combinations of the above
 
-## State-space modelling {.smaller}
+## State-space modelling - how it works {.smaller}
 
 State-space modelling attempts to predict the "true" unobservable state of a system from observable variables. It does so via two equations:
 
@@ -83,7 +81,7 @@ State-space modelling attempts to predict the "true" unobservable state of a sys
 Process equation:
 
 $$
-Z_t = B0 + C(Z_{t-1} - (B0 - BX_{t-1})) + BX_t + E_t
+Z_t = B_0 + C(Z_{t-1} - (B_0 + BX_{t-1})) + BX_t + E_t
 $$
 
 $$
@@ -94,19 +92,20 @@ $$
 Observation equation:
 
 $$
-Y_t = Multinomial(P_t, d)
+Y_t = \text{Multinomial}(P_t, d)
 $$
 
 $$
-logit(P_t) = Z_t
+\text{logit}(P_t) = Z_t
 $$
 
+$B_0$ = intercept, $C$ = interactions, $B$ = driver effects, $E_t$ = process error, $V$ = error covariance
 
 ## multinomialTS {.smaller}
 
 - Models a multinomial distribution (i.e., count data) directly
-- Accepts multiple covariates of different type
-- Incorporates  process error _and_ observation error
+- Accepts multiple covariates of different types
+- Incorporates process error _and_ observation error
 - [Asena _et al.,_ 2026](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210x.70315)
 
 
@@ -115,14 +114,13 @@ $$
 Two case studies to demonstrate the decision process and fitting process of `multinomialTS`
 
 - Decisions about the data
-  - chosing focal taxa and reference group
+  - choosing focal taxa and reference group
   - choosing window-span/prediction resolution
-
-
 - Decisions about the model
   - set up multiple working hypotheses
-  - fit model to hypotheses or components of each hypothesis
+  - fit the model to hypotheses or components of each hypothesis
 
+Each case study will follow the arc from setting up hypotheses, choosing focal taxa, and fitting the model.
 
 ## Case studies {.smaller}
 
@@ -134,7 +132,7 @@ Two case studies to demonstrate the decision process and fitting process of `mul
 - ~60,000 year-long record
 - Covariates
   - fungal spores (proxy for megaherbivory)
-  - $CO_2$ and $\delta18O$ (climate)
+  - $CO_2$ and $\delta^{18}O$ (climate)
   - Heinrich events (climate-related)
   - charcoal (fire)
 - Williams _et al.,_ in review, @grimm1993; @grimm2006b
@@ -147,7 +145,7 @@ Two case studies to demonstrate the decision process and fitting process of `mul
 - ~13,000 years
 - Covariates (local)
   - lake level (proxy for humidity)
-- Johnson et al., in review, will include more covariates
+- Johnson _et al.,_ in review, will include more covariates
 :::
 ::::
 
@@ -155,7 +153,7 @@ Two case studies to demonstrate the decision process and fitting process of `mul
 
 ## Lake Tulane variables {.smaller}
 
-![](./figures/tulane_esa.svg){fig-align="center"}
+![](./figures/tulane_esa.svg){fig-align="center" fig-alt="Lake Tulane record: time series of the selected pollen taxa alongside the climate, fire, and megaherbivory covariates over roughly 60,000 years"}
 
 ## Fitting Lake Tulane {.smaller}
 
@@ -165,7 +163,7 @@ Two case studies to demonstrate the decision process and fitting process of `mul
 
 - Are biotic interactions or climatic variability the primary drivers of pine and oak dynamics?
 - Is mega-herbivory a significant driver of vegetation change?
-- is fire a significant driver of vegetation change?
+- Is fire a significant driver of vegetation change?
 :::
 
 ::: {.column}
@@ -183,13 +181,16 @@ Two case studies to demonstrate the decision process and fitting process of `mul
 
 ## Lake Tulane results {.smaller}
 
-![](./figures/tulane_B_C_ESA.svg){fig-align="center"}
+![](./figures/tulane_B_C_ESA.svg){fig-align="center" fig-alt="Lake Tulane results: estimated driver effects (B matrix) and taxa interactions (C matrix), with climate covariates showing a stronger influence than the interactions. Pine-oak interactions are more strongly negative in the pine -> oak direction."}
 
-Supported hypotheses: _given the data_, taxa interactions are important but climate covariates have a stronger influence.
+::: {.callout-note}
+# Supported hypotheses
+ _Given the data_, taxa interactions are important but climate covariates have a stronger influence. Pine-oak interactions are more strongly negative in the pine -> oak direction.
+:::
 
 ## Sunfish Pond variables {.smaller}
 
-![](./figures/sunfish_palaeo_plot.png){fig-align="center"}
+![](./figures/sunfish_palaeo_plot.png){fig-align="center" fig-alt="Sunfish Pond record: time series of the five dominant pollen taxa alongside the lake-level covariate over roughly 13,000 years"}
 
 ## Fitting Sunfish Pond {.smaller}
 
@@ -200,7 +201,7 @@ Supported hypotheses: _given the data_, taxa interactions are important but clim
 - Are local climatic conditions (humidity) a stronger driver of change than taxa interactions?
 :::
 ::: {.column}
-#### Parameter selection
+#### Parameter selection:
 
 - Window span / prediction resolution 100 years
 - Species/taxonomic group selection
@@ -214,10 +215,13 @@ Supported hypotheses: _given the data_, taxa interactions are important but clim
 
 ## Sunfish Pond results {.smaller}
 
-![](./figures/sunfish_B_C_MEE.svg){fig-align="center"}
+![](./figures/sunfish_B_C_MEE.svg){fig-align="center" fig-alt="Sunfish Pond results: estimated driver effects (B matrix) and taxa interactions (C matrix), with lake level most important to hemlock and pine"}
 
 
-Supported Hypotheses: local conditions most important to hemlock and pine. Interactions are important to pine-beech and pine-oak dynamics. Nothing significant at 0.05, but we do not recommend relying on P-values to test hypotheses. 
+::: {.callout-note}
+# Supported hypotheses
+Local conditions most important to hemlock and pine. Interactions are important to pine-beech and pine-oak dynamics. Nothing significant at 0.05, but we do not recommend relying on P-values to test hypotheses.
+:::
 
 ## Comparison of case-studies {.smaller}
 
@@ -243,15 +247,12 @@ _`multinomialTS` does not show causality but lends statistical support to hypoth
 - Single covariate
 - Multiple key taxa
 - Finer-scale resolution
-- Likely to be missing explanitory power from unmeasured drivers
+- Likely to be missing explanatory power from unmeasured drivers
 :::
 ::::
 
 # Thank you for listening!
 
-
-
-![](./figures/qr-code.png){fig-align="center" width=30%}
 
 :::{.r-stack}
 asenaq@caryinstitute.org
@@ -260,7 +261,7 @@ asenaq@caryinstitute.org
 
 ::: footer
 
-![](./figures/color-UWcrest-print.png){width=55} ![](./figures/NSF_Official_logo_High_Res_1200ppi.png){width=90}
+![](./figures/color-UWcrest-print.png){width=55 fig-alt="University of Wisconsin–Madison crest"} ![](./figures/NSF_Official_logo_High_Res_1200ppi.png){width=90 fig-alt="U.S. National Science Foundation logo"}
 :::
 
 ## References
