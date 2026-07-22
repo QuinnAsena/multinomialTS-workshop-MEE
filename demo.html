@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Quinn Asena • Jack Williams • Tony Ives">
-<meta name="dcterms.date" content="2026-07-21">
+<meta name="dcterms.date" content="2026-07-22">
 
 <title>multinomialTS coding demo</title>
 <style>
@@ -2548,7 +2548,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 21, 2026</p>
+      <p class="date">July 22, 2026</p>
     </div>
   </div>
   
@@ -2569,16 +2569,17 @@ window.Quarto = {
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p><code>multinomialTS</code> fits a state-space model to multinomially distributed ecological time series (community count data such as pollen counts). One of the primary goals is to test multiple hypotheses about the data: which environmental drivers have the strongest effects on which taxa, and are interactions among taxa or abiotic variables driving change in the system? The approach estimates coefficients for taxa interactions and driver–taxa relationships that we don’t get from methods such as ordination or cluster analysis, and we recommend it as complementary to those methods.</p>
-<p>This is a short coding demo. A more detailed walkthrough is in <code>state-space-walkthrough.qmd</code>, and further resources are in the <a href="https://github.com/QuinnAsena/multinomialTS-workshop">main workshop repository</a>. An HTML version of the full walkthrough is hosted at <a href="https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html">multinomialTS-workshop/</a>. In this demo we will use the example data in the package to:</p>
+<p>This is a short coding demo. A more detailed walkthrough — covering data wrangling and interpretation in depth — is hosted at <a href="https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html">multinomialTS-workshop</a>, with further resources in the <a href="https://github.com/QuinnAsena/multinomialTS-workshop">main workshop repository</a>.</p>
+<p>The talk used Lake Tulane and Sunfish Pond; here we use the package’s built-in <strong>Story Lake</strong> example so you can run every step yourself. We work through the same decisions from the talk:</p>
 <ul>
-<li>Choose a temporal resolution for prediction</li>
-<li>Find initial conditions with <code>mnGLMM()</code></li>
-<li>Fit <code>mnTS()</code> with and without species interactions</li>
+<li><strong>Data decisions</strong> — choose focal taxa / reference group and a prediction resolution</li>
+<li><strong>Model decisions</strong> — set up working hypotheses (with and without interactions) and fit them</li>
+<li>Interpret and compare the fits</li>
 </ul>
 </section>
 <section id="the-data" class="level1">
 <h1>The data</h1>
-<p>We will work with the built-in <code>story</code> data (Story Lake, IN; <span class="citation" data-cites="schlenker2024">(<a href="#ref-schlenker2024" role="doc-biblioref">Schlenker et al. 2024</a>)</span>). The taxa have already been wrangled into focal taxa (<em>Ulmus</em> / elm, <em>Fagus grandifolia</em> / American beech, <em>Quercus</em> / oak) plus a <code>hardwood</code> group and an <code>other</code> reference group. Full details of that wrangling step are in the extended walkthrough.</p>
+<p>We will work with the built-in <code>story</code> data (Story Lake, IN; <span class="citation" data-cites="schlenker2024">(<a href="#ref-schlenker2024" role="doc-biblioref">Schlenker et al. 2024</a>)</span>). The taxa have already been wrangled into focal taxa (<em>Ulmus</em> / elm, <em>Fagus grandifolia</em> / American beech, <em>Quercus</em> / oak) plus a <code>hardwood</code> group and an <code>other</code> reference group. Full details of that wrangling step are in the extended walkthrough. Recall from the talk that a <span class="math inline">\(k\)</span>-category multinomial lets us estimate <span class="math inline">\(k-1\)</span> taxa, so the <code>other</code> group serves as the reference.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># State variables (Y): pollen counts, wide format</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(story_pollen_wide, <span class="at">package =</span> <span class="st">&quot;multinomialTS&quot;</span>)</span>
@@ -2832,7 +2833,7 @@ Important
 <p>We now have a temporal resolution of 50-year bins, a site-by-species matrix <span class="math inline">\(Y\)</span>, and a binned and scaled covariate matrix <span class="math inline">\(X\)</span>.</p>
 <section id="finding-initial-conditions-with-mnglmm" class="level2">
 <h2 class="anchored" data-anchor-id="finding-initial-conditions-with-mnglmm">Finding initial conditions with <code>mnGLMM()</code></h2>
-<p><code>mnTS()</code> estimates biotic interactions (<span class="math inline">\(C\)</span> matrix), taxa-driver relationships (<span class="math inline">\(B\)</span> matrix), and cross-correlated error (<span class="math inline">\(V\)</span> matrix), but it needs starting values for <span class="math inline">\(B\)</span>, <span class="math inline">\(B0\)</span> (intercept), and <span class="math inline">\(V\)</span>. We get those from <code>mnGLMM()</code>, which returns estimates for <span class="math inline">\(B\)</span> and <span class="math inline">\(V\)</span> (not <span class="math inline">\(C\)</span>) and assumes no time gaps in the data.</p>
+<p><code>mnTS()</code> estimates biotic interactions (<span class="math inline">\(C\)</span> matrix), taxa-driver relationships (<span class="math inline">\(B\)</span> matrix), and cross-correlated error (<span class="math inline">\(V\)</span> matrix), but it needs starting values for <span class="math inline">\(B\)</span>, <span class="math inline">\(B_0\)</span> (intercept), and <span class="math inline">\(V\)</span>. We get those from <code>mnGLMM()</code>, which returns estimates for <span class="math inline">\(B\)</span> and <span class="math inline">\(V\)</span> (not <span class="math inline">\(C\)</span>) and assumes no time gaps in the data.</p>
 <p>For <code>mnGLMM()</code> we need:</p>
 <ul>
 <li>A vector that indicates the row indices where there are state variable observations: <code>sample_idx</code></li>
@@ -2924,7 +2925,7 @@ V =
 </section>
 <section id="setting-up-parameters-for-mnts" class="level2">
 <h2 class="anchored" data-anchor-id="setting-up-parameters-for-mnts">Setting up parameters for <code>mnTS()</code></h2>
-<p>We use the <code>mnGLMM()</code> output as starting values for <span class="math inline">\(B0\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(V\)</span>. <code>mnGLMM()</code> does not estimate <span class="math inline">\(C\)</span>, so we seed <span class="math inline">\(C\)</span> with values close to zero and let <code>mnTS()</code> do the rest.</p>
+<p>We use the <code>mnGLMM()</code> output as starting values for <span class="math inline">\(B_0\)</span>, <span class="math inline">\(B\)</span>, and <span class="math inline">\(V\)</span>. <code>mnGLMM()</code> does not estimate <span class="math inline">\(C\)</span>, so we seed <span class="math inline">\(C\)</span> with values close to zero and let <code>mnTS()</code> do the rest.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>B0.start.mnTS <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>B[<span class="dv">1</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># intercept</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>B.start.mnTS  <span class="ot">&lt;-</span> glmm_mod<span class="sc">$</span>B[<span class="dv">2</span>, , drop <span class="ot">=</span> <span class="cn">FALSE</span>] <span class="co"># covariate; add rows for more covariates</span></span>
@@ -2954,7 +2955,7 @@ V =
 </section>
 <section id="fitting-mnts" class="level2">
 <h2 class="anchored" data-anchor-id="fitting-mnts">Fitting <code>mnTS()</code></h2>
-<p>Unlike <code>mnGLMM()</code>, <code>mnTS()</code> <em>does</em> handle gaps in the state variables where there are data in the covariate matrix. We fit the model twice: without and with taxa interactions. Both fits are precomputed; set <code>eval: true</code> to run them live.</p>
+<p>Unlike <code>mnGLMM()</code>, <code>mnTS()</code> <em>does</em> handle gaps in the state variables where there are data in the covariate matrix. We fit the model twice, with each fit standing in for a working hypothesis: a null with no interactions versus one where <em>Fagus</em> and <em>Quercus</em> interact. Both fits are precomputed; set <code>eval: true</code> to run them live.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href>Without interactions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href>With interactions</a></li></ul>
 <div class="tab-content">
@@ -2995,7 +2996,7 @@ V =
 </section>
 <section id="interpreting-the-output" class="level1">
 <h1>Interpreting the output</h1>
-<p><code>coef()</code> and <code>summary()</code> show the model output:</p>
+<p><code>coef()</code> and <code>summary()</code> show the model output. The <code>B</code> coefficients are the driver effects and the <code>C</code> coefficients the taxa interactions — the same matrices shown as heatmaps in the talk’s results slides.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href>Without interactions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href>With interactions</a></li></ul>
 <div class="tab-content">
@@ -3045,7 +3046,7 @@ char_acc.Quercus     -0.17458198 0.02669360 -6.540219 6.142871e-11</code></pre>
 </div>
 </div>
 </div>
-<p>We have found that bootstrapping provides better estimates of standard errors (and P-values). The <code>boot()</code> function bootstraps the model but can take a long time; we don’t do it here, but we strongly recommend bootstrapping your final models — see the <a href="state-space-walkthrough.qmd">full walkthrough</a>.</p>
+<p>We have found that bootstrapping provides better estimates of standard errors (and P-values). The <code>boot()</code> function bootstraps the model but can take a long time; we don’t do it here, but we strongly recommend bootstrapping your final models — see the <a href="https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html">full walkthrough</a>.</p>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>

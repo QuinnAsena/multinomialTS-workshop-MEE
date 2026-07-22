@@ -37,23 +37,27 @@ change in the system? The approach estimates coefficients for taxa interactions
 and driver–taxa relationships that we don't get from methods such as ordination
 or cluster analysis, and we recommend it as complementary to those methods.
 
-This is a short coding demo. A more detailed walkthrough is in
-`state-space-walkthrough.qmd`, and further resources are in the
+This is a short coding demo. A more detailed walkthrough — covering data wrangling
+and interpretation in depth — is hosted at
+[multinomialTS-workshop](https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html),
+with further resources in the
 [main workshop repository](https://github.com/QuinnAsena/multinomialTS-workshop).
-An HTML version of the full walkthrough is hosted at
-[multinomialTS-workshop/](https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html).
-In this demo we will use the example data in the package to:
 
-- Choose a temporal resolution for prediction
-- Find initial conditions with `mnGLMM()`
-- Fit `mnTS()` with and without species interactions
+The talk used Lake Tulane and Sunfish Pond; here we use the package's built-in
+**Story Lake** example so you can run every step yourself. We work through the
+same decisions from the talk:
+
+- **Data decisions** — choose focal taxa / reference group and a prediction resolution
+- **Model decisions** — set up working hypotheses (with and without interactions) and fit them
+- Interpret and compare the fits
 
 # The data
 
 We will work with the built-in `story` data (Story Lake, IN; [@schlenker2024]). The taxa have already been
 wrangled into focal taxa (*Ulmus* / elm, *Fagus grandifolia* / American beech, *Quercus* / oak) plus a
 `hardwood` group and an `other` reference group. Full details of that wrangling
-step are in the extended walkthrough.
+step are in the extended walkthrough. Recall from the talk that a $k$-category
+multinomial lets us estimate $k-1$ taxa, so the `other` group serves as the reference.
 
 ```{r}
 #| label: lst-read-data
@@ -249,7 +253,7 @@ matrix $Y$, and a binned and scaled covariate matrix $X$.
 
 `mnTS()` estimates biotic interactions ($C$ matrix), taxa-driver relationships
 ($B$ matrix), and cross-correlated error ($V$ matrix), but it needs starting
-values for $B$, $B0$ (intercept), and $V$. We get those from `mnGLMM()`, which
+values for $B$, $B_0$ (intercept), and $V$. We get those from `mnGLMM()`, which
 returns estimates for $B$ and $V$ (not $C$) and assumes no time gaps in the data.
 
 For `mnGLMM()` we need:
@@ -309,7 +313,7 @@ summary(glmm_mod)
 
 ## Setting up parameters for `mnTS()`
 
-We use the `mnGLMM()` output as starting values for $B0$, $B$, and $V$. `mnGLMM()`
+We use the `mnGLMM()` output as starting values for $B_0$, $B$, and $V$. `mnGLMM()`
 does not estimate $C$, so we seed $C$ with values close to zero and let `mnTS()`
 do the rest.
 
@@ -344,8 +348,9 @@ C.fixed.int.mnTS[C.fixed.int.mnTS != 0] <- NA
 ## Fitting `mnTS()`
 
 Unlike `mnGLMM()`, `mnTS()` *does* handle gaps in the state variables where there
-are data in the covariate matrix. We fit the model twice: without and with taxa
-interactions. Both fits are precomputed; set `eval: true` to run them live.
+are data in the covariate matrix. We fit the model twice, with each fit standing in
+for a working hypothesis: a null with no interactions versus one where *Fagus* and
+*Quercus* interact. Both fits are precomputed; set `eval: true` to run them live.
 
 ::: {.panel-tabset}
 
@@ -392,7 +397,9 @@ mnTS_mod_int <- readRDS("./outputs/mnTS_mod_int.rds")
 
 # Interpreting the output
 
-`coef()` and `summary()` show the model output:
+`coef()` and `summary()` show the model output. The `B` coefficients are the driver
+effects and the `C` coefficients the taxa interactions — the same matrices shown as
+heatmaps in the talk's results slides.
 
 ::: {.panel-tabset}
 
@@ -413,7 +420,7 @@ coef(mnTS_mod_int)
 We have found that bootstrapping provides better estimates of standard errors
 (and P-values). The `boot()` function bootstraps the model but can take a long
 time; we don't do it here, but we strongly recommend bootstrapping your final
-models — see the [full walkthrough](state-space-walkthrough.qmd).
+models — see the [full walkthrough](https://quinnasena.github.io/multinomialTS-workshop/state-space-walkthrough.html).
 
 
 # References
