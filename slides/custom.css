@@ -1,0 +1,10 @@
+/* Center figure captions beneath the (centered) image */
+.reveal figcaption {
+  text-align: center;
+}
+
+/* The title is long — shrink the title-slide text so it isn't enormous */
+#title-slide .title {
+  font-size: 1.6em;
+  line-height: 1.2;
+}

@@ -1,6 +1,5 @@
 ---
-title: "State-Space Methods for Community and Paleoecological Time Series"
-subtitle: "multinomialTS"
+title: "`multinomialTS`: a state-space approach for modelling community time series"
 author: "Quinn Asena • Jack Williams • Tony Ives"
 date: today
 bibliography: ../refs.bib
@@ -8,27 +7,24 @@ from: markdown+emoji
 format:
   revealjs:
     theme: dark
+    css: custom.css
     slide-number: true
     incremental: false
     embed-resources: true
     link-external-newwindow: true
     logo: ./figures/dark-mode.png
-execute:
-  echo: true
-  cache: false
-  message: false
 
 title-slide-attributes:
   data-background-color: "#054746ff"
 ---
 
 
-
 ## Welcome {.smaller}
 
-Here we're going to demonstrate the `multinomialTS` R package on two contrasting palaeoecological datasets.
+- Here, I will show two contrasting case studies to demonstrate how to fit `multinomialTS` to data with different characteristics.
 
-This will be followed by a demo coding session...
+- This will be followed by a coding demo for the programmatic workflow.
+
 
 ## People {.smaller}
 
@@ -47,20 +43,25 @@ This will be followed by a demo coding session...
 :::
 ::::
 
-![](./figures/people.png){fig-align="center" width="700" height="400" fig-alt="Group photo of the project collaborators"}
+![](./figures/people.png){fig-align="center" width="700" fig-alt="Group photo of the project collaborators"}
 
 
+## The aim of `multinomialTS` {.smaller}
 
-## The problem {.smaller}
+- Disentangle the relative effects of abiotic drivers and biotic interactions
+- Lend statistical support to hypotheses about the drivers of community change
+- Tackle the statistical challenges of unevenly spaced time series and relative-abundance data
 
-Relative-abundance data (counts from a finite sample across classes) create
-interdependencies among taxa: we can only estimate $n-1$ taxa.
 
-If 3 species and 60% are species 1, 30% are species 2, then species 3 must be 10%.
+## The multinomial distribution {.smaller}
 
-`multinomialTS` is designed for a multinomially distributed response, with
-covariates of mixed types.
+- Counts of $n$ individuals across $k$ categories — like rolling a
+  **loaded** $k$-sided die $n$ times and tallying each face
+- Each face = a taxon; each roll = an individual counted (e.g., a pollen grain)
+- The counts must sum to $n$, so they are **not independent** —
+  we can only estimate $k-1$ taxa
 
+![Here is a stock image of dice! It's probably AI-generated...](./figures/dice.jpg){fig-align="center" width="45%" fig-alt="A stack of dice representing a multinomial distribution."}
 
 ## State-space modelling - what it estimates {.smaller}
 
@@ -85,7 +86,7 @@ Z_t = B_0 + C(Z_{t-1} - (B_0 + BX_{t-1})) + BX_t + E_t
 $$
 
 $$
-E_t \sim N(0, \sigma^2V)
+E_t \sim N(0, \sigma^2 V)
 $$
 
 
@@ -101,10 +102,11 @@ $$
 
 $B_0$ = intercept, $C$ = interactions, $B$ = driver effects, $E_t$ = process error, $V$ = error covariance
 
+
 ## multinomialTS {.smaller}
 
 - Models a multinomial distribution (i.e., count data) directly
-- Accepts multiple covariates of different types
+- Accepts multiple covariates of mixed types
 - Incorporates process error _and_ observation error
 - [Asena _et al.,_ 2026](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210x.70315)
 
@@ -183,8 +185,7 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 
 ![](./figures/tulane_B_C_ESA.svg){fig-align="center" fig-alt="Lake Tulane results: estimated driver effects (B matrix) and taxa interactions (C matrix), with climate covariates showing a stronger influence than the interactions. Pine-oak interactions are more strongly negative in the pine -> oak direction."}
 
-::: {.callout-note}
-# Supported hypotheses
+::: {.callout-note  title="Supported hypotheses"}
  _Given the data_, taxa interactions are important but climate covariates have a stronger influence. Pine-oak interactions are more strongly negative in the pine -> oak direction.
 :::
 
@@ -207,8 +208,8 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 - Species/taxonomic group selection
   - five most dominant taxa
   - eastern white pine, hemlock, beech, oak, and birch
-- Interactions:
-  - pine - hemlock (in this example)
+- Interactions estimated:
+  - pine - oak + beech (in this example)
 :::
 ::::
 
@@ -218,12 +219,11 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 ![](./figures/sunfish_B_C_MEE.svg){fig-align="center" fig-alt="Sunfish Pond results: estimated driver effects (B matrix) and taxa interactions (C matrix), with lake level most important to hemlock and pine"}
 
 
-::: {.callout-note}
-# Supported hypotheses
+::: {.callout-note  title="Supported hypotheses"}
 Local conditions most important to hemlock and pine. Interactions are important to pine-beech and pine-oak dynamics. Nothing significant at 0.05, but we do not recommend relying on P-values to test hypotheses [@anderson2000].
 :::
 
-## Comparison of case-studies {.smaller}
+## Comparison of case studies {.smaller}
 
 _`multinomialTS` does not show causality but lends statistical support to hypotheses._
 
@@ -251,7 +251,7 @@ _`multinomialTS` does not show causality but lends statistical support to hypoth
 :::
 ::::
 
-## Outro
+## In practice {.smaller}
 
 Note that for both case studies, I only showed results for testing one hypothesis/component. The full analyses for both sites includes multiple model fits to piece together the full story of ecosystem dynamics.
 
@@ -259,10 +259,7 @@ Note that for both case studies, I only showed results for testing one hypothesi
 # Thank you for listening!
 
 
-:::{.r-stack}
 asenaq@caryinstitute.org
-:::
-
 
 ::: footer
 
