@@ -190,6 +190,7 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 
 This case study shows how **data** decisions are made to accommodate imperfect covariate data, and how **model** decisions are made to test hypotheses about climatic drivers and biotic interactions.
 
+Model fits to test other components of the hypotheses included: no interactions as a null model, and including/excluding the holocene period (among others).
 
 ## Sunfish Pond variables {.smaller}
 
