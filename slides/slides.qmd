@@ -50,16 +50,14 @@ title-slide-attributes:
 
 - Disentangle the relative effects of abiotic drivers and biotic interactions
 - Lend statistical support to hypotheses about the drivers of community change
-- Tackle the statistical challenges of unevenly spaced time series and relative-abundance data
+- Tackle the statistical challenges of unevenly spaced time series and relative-abundance data (multinomially distributed data)
 
 
 ## The multinomial distribution {.smaller}
 
-- Counts of $n$ individuals across $k$ categories — like rolling a
-  **loaded** $k$-sided die $n$ times and tallying each face
-- Each face = a taxon; each roll = an individual counted (e.g., a pollen grain)
-- The counts must sum to $n$, so they are **not independent** —
-  we can only estimate $k-1$ taxa
+- Counts of $n$ individuals across $k$ categories, like rolling a
+  **loaded** $k$-sided die $n$ times
+- The counts must sum to $n$, so we can only estimate $k-1$ taxa
 
 ![Here is a stock image of dice! It's probably AI-generated...](./figures/dice.jpg){fig-align="center" width="45%" fig-alt="A stack of dice representing a multinomial distribution."}
 
@@ -71,7 +69,7 @@ _State-space modelling goes beyond descriptive approaches and attempts to estima
 
 - Autoregressive / density-dependent processes
 - Interspecific interactions
-- Taxa-driver relationships
+- Driver-taxa relationships
 - Combinations of the above
 
 ## State-space modelling - how it works {.smaller}
@@ -103,17 +101,17 @@ $$
 $B_0$ = intercept, $C$ = interactions, $B$ = driver effects, $E_t$ = process error, $V$ = error covariance
 
 
-## multinomialTS {.smaller}
+## `multinomialTS` {.smaller}
 
 - Models a multinomial distribution (i.e., count data) directly
 - Accepts multiple covariates of mixed types
-- Incorporates process error _and_ observation error
-- [Asena _et al.,_ 2026](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210x.70315)
+- Generates estimates of taxa interactions and driver-taxa relationships
+- The full publication is available at [Asena _et al.,_ 2026](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210x.70315)
 
 
 ## Fitting process {.smaller}
 
-Two case studies to demonstrate the decision process and fitting process of `multinomialTS`
+We will follow two case studies to demonstrate the decision process of fitting `multinomialTS`
 
 - Decisions about the data
   - choosing focal taxa and reference group
@@ -144,13 +142,12 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 #### Sunfish Pond
 
 - Pennsylvania, USA
-- ~13,000 years
-- Covariates (local)
-  - lake level (proxy for humidity)
-- Johnson _et al.,_ in review, will include more covariates
+- ~13,800 years
+- Covariates
+  - lake level (proxy for hydroclimate)
+- Johnson _et al.,_ in review, includes more covariates to test local vs regional drivers
 :::
 ::::
-
 
 
 ## Lake Tulane variables {.smaller}
@@ -189,9 +186,14 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
  _Given the data_, taxa interactions are important but climate covariates have a stronger influence. Pine-oak interactions are more strongly negative in the pine -> oak direction.
 :::
 
+## Lake Tulane summary {.smaller}
+
+This case study shows how **data** decisions are made to accommodate imperfect covariate data, and how **model** decisions are made to test hypotheses about climatic drivers and biotic interactions.
+
+
 ## Sunfish Pond variables {.smaller}
 
-![](./figures/sunfish_palaeo_plot.png){fig-align="center" fig-alt="Sunfish Pond record: time series of the five dominant pollen taxa alongside the lake-level covariate over roughly 13,000 years"}
+![](./figures/sunfish_palaeo_plot.png){fig-align="center" fig-alt="Sunfish Pond record: time series of the five dominant pollen taxa alongside the lake-level covariate over roughly 13,800 years"}
 
 ## Fitting Sunfish Pond {.smaller}
 
@@ -199,7 +201,7 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 ::: {.column}
 #### Questions/hypotheses:
 
-- Are local climatic conditions (humidity) a stronger driver of change than taxa interactions?
+- Are local climatic conditions (hydroclimate) a stronger driver of change than taxa interactions?
 :::
 ::: {.column}
 #### Parameter selection:
@@ -209,7 +211,7 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
   - five most dominant taxa
   - eastern white pine, hemlock, beech, oak, and birch
 - Interactions estimated:
-  - pine - oak + beech (in this example)
+  - pine - oak - beech (in this example)
 :::
 ::::
 
@@ -222,6 +224,14 @@ Each case study will follow the arc from setting up hypotheses, choosing focal t
 ::: {.callout-note  title="Supported hypotheses"}
 Local conditions most important to hemlock and pine. Interactions are important to pine-beech and pine-oak dynamics. Nothing significant at 0.05, but we do not recommend relying on P-values to test hypotheses [@anderson2000].
 :::
+
+
+## Sunfish Pond summary {.smaller}
+
+This case study demonstrates a partial interaction matrix, i.e., including bidirectional interactions of pine with other taxa but not including beech-oak interactions.
+
+Because of the short time series we cannot estimate all interactions at once but we can make **model** decisions to break up the analyses into testable components. That is, build a more complete picture by pairwise model fits.
+
 
 ## Comparison of case studies {.smaller}
 
@@ -253,7 +263,7 @@ _`multinomialTS` does not show causality but lends statistical support to hypoth
 
 ## In practice {.smaller}
 
-Note that for both case studies, I only showed results for testing one hypothesis/component. The full analyses for both sites includes multiple model fits to piece together the full story of ecosystem dynamics.
+Note that for both case studies, I only showed results for testing one hypothesis/component. The full analyses for both sites include multiple model fits to piece together the full story of ecosystem dynamics.
 
 
 # Thank you for listening!

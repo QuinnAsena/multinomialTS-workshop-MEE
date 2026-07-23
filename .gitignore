@@ -49,3 +49,5 @@ po/*~
 rsconnect/
 
 /.quarto/
+slides/notes.md
+slides/notes.html
